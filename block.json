@@ -1,4 +1,8 @@
 {
     "version": "1.0",
-    "frontendEntry": "./src/index.js"
+    "frontendEntry": "./src/index.js",
+    "include": ["src/**/*"],
+    "compilerOptions": {
+      "baseUrl": "src"
+    }
 }

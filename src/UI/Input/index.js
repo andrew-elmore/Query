@@ -12,7 +12,7 @@ import Autocomplete from './Autocomplete';
 import MultiSelectInput from './MultiSelectInput'
 
 export default (props) => {
-  switch (props.inputType) {
+  switch (props.type) {
     case 'text':
       return (<TextInput {...props}/>)
       break;
