@@ -1,5 +1,8 @@
-const reducers = (state, action) => {
-  return {...state, [action.type]: action.value}
-}
+import { combineReducers } from 'redux';
 
-export default reducers
+import appState from './appState'
+
+export default combineReducers({
+  appState
+})
+

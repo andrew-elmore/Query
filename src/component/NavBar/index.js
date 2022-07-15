@@ -5,19 +5,22 @@ import Tab from '@mui/material/Tab';
 
 export default function NavBar({
   tab,
-  setTab
+  setTab,
+  tabs
 }) {
   return (
       <AppBar position="static">
         <Tabs 
           value={tab}
           onChange={(e, value) => {setTab(value)}}
-          textColor="white"
+          textColor="secondary"
           indicatorColor="secondary"
         >
-          <Tab label="Item One" value={0} />
-          <Tab label="Item Two" value={1} />
-          <Tab label="Item Three" value={2} />
+          {tabs.map((tab) => {
+            return (
+              <Tab color='white' key={tab.id} label={tab.label} value={tab.id} />
+            )
+          })}
         </Tabs>
       </AppBar>
   );
