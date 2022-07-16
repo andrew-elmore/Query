@@ -1,8 +1,10 @@
 import { bindActionCreators } from 'redux';
 import AppStateActions from './AppStateActions'
+import UploadActions from './UploadActions'
 
 const actionsToBind = {
-  AppStateActions
+  AppStateActions,
+  UploadActions
 };
 
 export default class Actions {
