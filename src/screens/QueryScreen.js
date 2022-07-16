@@ -18,40 +18,33 @@ function QueryScreen({
   const itemsAInit = [
     {
       id: 'gary',
-      label: 'Gary Goodspeed'
+      label: 'Gary Goodspeed',
+      test: 'ABC'
     },
     {
       id: 'cato',
-      label: 'Little Cato'
+      label: 'Little Cato',
+      test: 'ABC'
     },
     {
       id: 'kvn',
-      label: 'KVN'
+      label: 'KVN',
+      test: 'ABC'
     },
     {
       id: 'mooncake',
-      label: 'Mooncake'
+      label: 'Mooncake',
+      test: 'ABC'
     },
     {
       id: 'quinn',
-      label: 'Quinn Ergon'
+      label: 'Quinn Ergon',
+      test: 'ABC'
     }
   ]
   
 
   const [itemsA, setItemsA] = React.useState(itemsAInit);
-
-
-  
-  // function handleOnDragEnd(result) {
-  //   if (!result.destination) return;
-
-  //   const items = Array.from(characters);
-  //   const [reorderedItem] = items.splice(result.source.index, 1);
-  //   items.splice(result.destination.index, 0, reorderedItem);
-
-  //   updateCharacters(items);
-  // }
 
   return (
     <Grid container style={{margin: 10}}>
@@ -60,10 +53,11 @@ function QueryScreen({
           items={itemsA}
           onUpdate={setItemsA}
           id='DnD1'
-          itemRender={({dragHandle, item}) => (
+          itemRender={({dragHandle, item, onChange}) => (
             <QueryTarget
               dragHandle={dragHandle}
               item={item}
+              onChange={onChange}
             />
           )}
         />

@@ -13,7 +13,7 @@ function DragAndDrop({
   itemRender
 }) {
 
-  function handleOnDragEnd(result) {
+  const handleOnDragEnd = (result) => {
     if (!result.destination) return;
 
     let newItems
@@ -28,6 +28,19 @@ function DragAndDrop({
     onUpdate(newItems);
   }
 
+  const handleChangeItem = ({field, value, index}) => {
+    console.log(':~:DND', __filename.split('/').pop(), 'handleChangeItem', 'props', {field, value, index})
+    let newItems
+    if (typeof items.getActionToken === 'function') {
+      newItems = items.getActionToken();
+    } else {
+      newItems = [...items]
+    }
+    newItems[index][field] = value
+
+    onUpdate(newItems)
+  }
+
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Droppable droppableId={id}>
@@ -40,6 +53,7 @@ function DragAndDrop({
                   index={index}
                   item={item}
                   itemRender={itemRender}
+                  onChange={handleChangeItem}
                 />
               );
             })}

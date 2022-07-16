@@ -12,7 +12,7 @@ const DraggableContainer = ({
   index,
   item,
   itemRender,
-  onUpdateItem
+  onChange
 }) => {
 
 
@@ -26,7 +26,6 @@ const DraggableContainer = ({
     )
   }
 
-
   return (
     <Draggable key={id} draggableId={id} index={index}>
       {(provided) => (
@@ -34,7 +33,7 @@ const DraggableContainer = ({
           {
             itemRender({
               dragHandle: dragAnchor(provided.dragHandleProps),
-              onChange: (props) => {onUpdateItem({...props, index})},
+              onChange: (props) => {onChange({...props, index})},
               item
             })
           }

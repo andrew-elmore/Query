@@ -7,7 +7,8 @@ import Input from './../../UI/Input'
 
 const QueryTarget = ({
   dragHandle,
-  item
+  item,
+  onChange
 }) => {
 
   // const classes = useStyles();
@@ -19,11 +20,10 @@ const QueryTarget = ({
         </Grid>
         <Grid item xs={7}>
           <Input
+            field='test'
+            value={item['test']}
             type='text' 
-            onChange={() => {onChange({
-              field: 'test', 
-              value
-            })}}
+            onChange={onChange}
           />
         </Grid>
         <Grid item xs={2}>
