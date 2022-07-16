@@ -91,8 +91,8 @@ export default class BasicArray extends Array {
 
     toIds = () => this.map((item) => item.id);
     
-    getAPIToken () {
-        return this.map(ele => ele.getAPIToken())
+    getActionToken () {
+        return this.map(ele => ele.getActionToken())
       }
 
     get pointer() {

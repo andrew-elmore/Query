@@ -9,4 +9,12 @@ export default class CsvRecord  extends BasicDomain{
     this.originalFields = props.originalFields || []
     this.currentFields = props.originalFields || this.originalFields
   }
+
+  getActionToken() {
+    return {
+      id: this.id,
+      originalFields: this.originalFields,
+      currentFields: this.currentFields
+    }
+  }
 }

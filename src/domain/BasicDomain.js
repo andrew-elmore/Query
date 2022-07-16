@@ -20,7 +20,7 @@ export default class BasicDomain {
 
     equals = (obj) => (obj instanceof this.myClass && this.id === obj.id);
 
-    getAPIToken = () => {
+    getActionToken = () => {
         throw new Error('Action not allowed');
     };
 
