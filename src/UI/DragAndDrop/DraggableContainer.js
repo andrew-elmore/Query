@@ -16,7 +16,7 @@ const DraggableContainer = ({
 }) => {
 
 
-  const dragAnchor = (dragHandleProps, item) => {
+  const dragAnchor = (dragHandleProps) => {
     return (
       <div {...dragHandleProps} style={{display: 'inline', padding: 5}}>
         <IconButton disabled>
