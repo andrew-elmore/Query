@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  useBase,
-} from '@airtable/blocks/ui';
-import NavBar from './component/NavBar';
-import Paper from '@mui/material/Paper';
+import { useBase } from '@airtable/blocks/ui';
 import {actionProvider} from './actions'
 import { connect } from 'react-redux';
 
@@ -12,6 +8,9 @@ import QueryScreen from './screens/QueryScreen';
 import ViewScreen from './screens/ViewScreen';
 import ResultScreen from './screens/ResultScreen';
 import ActionScreen from './screens/ActionScreen';
+
+import NavBar from './component/NavBar';
+import Paper from '@mui/material/Paper';
 
 
 function App({
@@ -59,7 +58,6 @@ function App({
       />
       {screens[tab]}
     </Paper>
-
   );
 }
 

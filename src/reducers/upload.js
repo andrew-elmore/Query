@@ -1,7 +1,9 @@
+import getTestData from "../tests/testData/data"
 import CsvRecordArray from "../domain/CsvRecordArray"
 import CsvRecord from "../domain/CsvRecord"
 
-const initState = {
+
+const initState = getTestData('upload') || {
   records: new CsvRecordArray()
 }
 
