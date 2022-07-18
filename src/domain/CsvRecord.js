@@ -1,7 +1,7 @@
 import BasicDomain from './BasicDomain'
 
 export default class CsvRecord  extends BasicDomain{
-  get getMyClass() { return CsvRecord; }
+  get myClass() { return CsvRecord; }
 
   constructor(props = {}){
     super(props)

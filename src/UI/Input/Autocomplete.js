@@ -16,6 +16,31 @@ const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, s
   const classes = useStyles();
 
   const [textValue, setTextValue] = React.useState(value || '')
+
+
+  const getOptionLabel = (option) => {
+    if (typeof option == 'object') {
+      return option.label || option.name || ''
+    } else {
+      return option
+    }
+  }
+  const getOptionSelected = (option) => {
+    if (typeof option == 'object') {
+      return option.id === value
+    } else {
+      return option
+    }
+  }
+
+  const getOptionValue = (option) => {
+    if (typeof option == 'object') {
+      return option.id
+    } else {
+      return option
+    }
+  }
+
   return (
     <Autocomplete
       value={value || ''}
@@ -23,6 +48,9 @@ const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, s
       inputValue={textValue}
       onInputChange={(e, value) => {setTextValue(value)}}
       options={options}
+      getOptionLabel={getOptionLabel}
+      getOptionSelected={getOptionSelected}
+      getOptionValue={getOptionValue}
       fullWidth
       size={size}
       renderInput={(params) => <TextField {...params} label={label || field} variant="outlined" />}

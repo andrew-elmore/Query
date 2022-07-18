@@ -1,7 +1,7 @@
 import BasicDomain from './BasicDomain'
 
 export default class Base  extends BasicDomain{
-  get getMyClass() { return Base; }
+  get myClass() { return Base; }
 
   constructor(props = {}){
     super(props)

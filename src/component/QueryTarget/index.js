@@ -4,32 +4,43 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 
 import Input from './../../UI/Input'
+import WhereTarget from './WhereTarget'
+import AndOrTarget from './AndOrTarget'
 
 const QueryTarget = ({
-  dragHandle,
-  item,
-  onChange
+  onChange,
+  query,
+  base,
+  tables,
+  csvRecords
 }) => {
 
-  // const classes = useStyles();
+  const selectQueryType = () => {
+    if (query.type === 'where') {
+      return (
+        <WhereTarget
+          onChange={onChange}
+          query={query}
+          base={base}
+          tables={tables}
+          csvRecords={csvRecords}
+        />
+      )
+    } else {
+      return (
+        <AndOrTarget
+          onChange={onChange}
+          query={query}
+          base={base}
+          tables={tables}
+          csvRecords={csvRecords}
+        />
+      )
+    }
+  }
   return (
     <Card style={{margin: 5, padding: 5}}>
-      <Grid container >
-        <Grid item xs={3}>
-          {item.label}
-        </Grid>
-        <Grid item xs={7}>
-          <Input
-            field='test'
-            value={item['test']}
-            type='text' 
-            onChange={onChange}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          {dragHandle}
-        </Grid>
-      </Grid>
+      {selectQueryType()}
     </Card>
   );
 }
