@@ -29,7 +29,6 @@ function DragAndDrop({
   }
 
   const handleChangeItem = ({field, value, index}) => {
-    console.log(':~:DND', __filename.split('/').pop(), 'handleChangeItem', 'props', {field, value, index})
     let newItems
     if (typeof items.getActionToken === 'function') {
       newItems = items.getActionToken();

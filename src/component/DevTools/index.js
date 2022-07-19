@@ -11,7 +11,6 @@ const DevTools = ({
     Object.entries(state).forEach(([sliceName, slice]) => {
       const sliceToken = {}
       Object.entries(slice).forEach(([sectionName, sectionValues]) => {
-        console.log(':~:', __filename.split('/').pop(), 'method', 'typeof sectionValues', typeof sectionValues)
         if (typeof sectionValues.getActionToken === 'function') {
           sliceToken[sectionName] = sectionValues.getActionToken()
         } else if (!['tables', 'base'].includes(sectionName)){

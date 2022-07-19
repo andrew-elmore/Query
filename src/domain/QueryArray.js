@@ -10,7 +10,6 @@ export default class QueryArray extends BasicArray {
   }
 
   getActionToken(){
-    console.log(':~:', __filename.split('/').pop(), 'method', 'this', this)
     return this.map(query => query.getActionToken())
   }
 }
