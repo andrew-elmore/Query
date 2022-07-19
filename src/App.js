@@ -12,9 +12,12 @@ import ActionScreen from './screens/ActionScreen';
 import NavBar from './component/NavBar';
 import Paper from '@mui/material/Paper';
 
+import DevTools from './component/DevTools'
+
 
 function App({
   tab,
+  state,
   actions: {
     AppStateActions
   }
@@ -23,15 +26,20 @@ function App({
   const base = useBase();
 
   React.useEffect(() => {
-    const tables = base._baseData.tableOrder.map((tableId) => {
-      return base.getTableById(tableId)
-    })
-    AppStateActions.init({
-      base,
-      tables
-    })
+    if (base) {
+      const tables = base._baseData.tableOrder.map((tableId) => {
+        return base.getTableById(tableId)
+      })
+      AppStateActions.init({
+        base,
+        tables
+      })
+    }
   }, [])
 
+  if (!state.appState.base) {
+    return null
+  }
 
   const tabs = [
     {id: 0, label: 'Data'},
@@ -57,12 +65,16 @@ function App({
         setTab={AppStateActions.setTab}
       />
       {screens[tab]}
+      <DevTools
+        state={state}
+      />
     </Paper>
   );
 }
 
 const propMap = (store) => ({
   tab: store.appState.tab,
+  state: store
 });
 
 

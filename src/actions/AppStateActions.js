@@ -18,9 +18,6 @@ export function init ({tables, base}) {
 }
 
 
-
-
-
 export default {
   init,
   setTab

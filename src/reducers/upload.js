@@ -2,12 +2,12 @@ import getTestData from "../tests/testData/data"
 import CsvRecordArray from "../domain/CsvRecordArray"
 import CsvRecord from "../domain/CsvRecord"
 
+const sliceName = 'upload'
 
-const initState = getTestData('upload') || {
+const initState = getTestData(sliceName) || {
   records: new CsvRecordArray()
 }
 
-const sliceName = 'upload'
 const name = 'UPLOAD'
 export default (state = initState, action) => {
   switch (action.type) {

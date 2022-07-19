@@ -1,13 +1,14 @@
 import testData from './../tests/testData/data'
 import getTestData from "../tests/testData/data"
 
-const initState = getTestData('appState') || {
+const sliceName = 'appState'
+
+const initState = getTestData(sliceName) || {
   tab: 0,
   base: {},
   tables: []
 }
 
-const sliceName = 'appState'
 export default (state = initState, action) => {
   switch (action.type) {
     case 'OVERIDE':

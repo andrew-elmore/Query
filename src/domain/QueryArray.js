@@ -8,4 +8,9 @@ export default class QueryArray extends BasicArray {
   constructor(items = []) {
     super(items)
   }
+
+  getActionToken(){
+    console.log(':~:', __filename.split('/').pop(), 'method', 'this', this)
+    return this.map(query => query.getActionToken())
+  }
 }

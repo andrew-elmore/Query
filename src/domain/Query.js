@@ -75,7 +75,7 @@ export default class Query  extends BasicDomain{
     }
   }
 
-  getActionToken() {
+  getActionToken = () => {
     return {
       id: this.id,
       type: this.type,

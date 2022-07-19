@@ -1,12 +1,12 @@
 import getTestData from "../tests/testData/data"
 import Query from "./../domain/Query"
 
+const sliceName = 'query'
 
-const initState = getTestData('query') || {
+const initState = getTestData(sliceName) || {
   query: new Query()
 }
 
-const sliceName = 'query'
 const name = 'QUERY'
 export default (state = initState, action) => {
   switch (action.type) {
