@@ -3,13 +3,17 @@ import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 
 import Input from './../../UI/Input'
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const WhereTarget = ({
   query,
   base,
   tables,
   csvRecords,
-  onChange
+  onChange,
+  onRemove,
+  isChild
 }) => {
 
   const tableOptions = tables.map((t) => {
@@ -18,14 +22,6 @@ const WhereTarget = ({
       label: t.name
     })
   })
-
-  const handleChange = ({ids = [], field, value}) => {
-    onChange({
-      field,
-      value,
-      ids: [...ids, query.id]
-    })
-  }
 
   const airtableFieldOptions = () => {
     if (query.table?.id) {
@@ -51,34 +47,34 @@ const WhereTarget = ({
 
   return (
     <Grid container style={{margin: 5}}>
-      <Grid item xs={12} md={1}>
+      <Grid item xs={12} md={2}>
         <Input
           field="type"
-          onChange={handleChange}
+          onChange={onChange}
           value={query.type}
           label='Type'
           type="autocomplete"
           options={[
-            'where',
-            'and',
-            'or'
+            'WHERE',
+            'AND',
+            'OR'
           ]}
         />
       </Grid>
       <Grid item xs={12} md={2}>
         <Input
           field="table"
-          onChange={handleChange}
+          onChange={onChange}
           value={query.table}
           label='Table'
           type="autocomplete"
           options={tableOptions}
         />
       </Grid>
-      <Grid item xs={12} md={3}>
+      <Grid item xs={12} md={2}>
         <Input
           field="airtableField"
-          onChange={handleChange}
+          onChange={onChange}
           value={query.airtableField}
           label='Airtable Field'
           type="autocomplete"
@@ -88,7 +84,7 @@ const WhereTarget = ({
       <Grid item xs={12} md={2}>
         <Input
           field="rule"
-          onChange={handleChange}
+          onChange={onChange}
           value={query.rule}
           label='Rule'
           type="autocomplete"
@@ -105,7 +101,7 @@ const WhereTarget = ({
       <Grid item xs={12} md={3}>
         <Input
           field="csvField"
-          onChange={handleChange}
+          onChange={onChange}
           value={query.csvField}
           label='CSV Field'
           type="autocomplete"
@@ -113,7 +109,15 @@ const WhereTarget = ({
         />
       </Grid>
       <Grid item xs={12} md={1}>
-        
+        {isChild? (
+          <Grid container justifyContent="flex-end" alignItems="center">
+            <IconButton
+              onClick={onRemove}
+            >
+              <DeleteIcon/>
+            </IconButton>
+          </Grid>
+        ) : (null)}
       </Grid>
     </Grid>
   );

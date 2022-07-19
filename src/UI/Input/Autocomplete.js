@@ -29,7 +29,7 @@ const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, s
     if (typeof option == 'object') {
       return option.id === value
     } else {
-      return option
+      return option === value
     }
   }
 

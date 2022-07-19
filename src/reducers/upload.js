@@ -7,9 +7,15 @@ const initState = getTestData('upload') || {
   records: new CsvRecordArray()
 }
 
+const sliceName = 'upload'
 const name = 'UPLOAD'
 export default (state = initState, action) => {
   switch (action.type) {
+    case 'OVERIDE':
+      return {
+        ...action.payload[sliceName],
+        ...state
+      }
     case `${name}_SET`:
       return {
         ...state,

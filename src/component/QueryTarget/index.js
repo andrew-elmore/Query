@@ -8,32 +8,59 @@ import WhereTarget from './WhereTarget'
 import AndOrTarget from './AndOrTarget'
 
 const QueryTarget = ({
-  onChange,
   query,
   base,
   tables,
-  csvRecords
+  csvRecords,
+  isChild,
+  onChange,
+  onAdd,
+  onRemove
 }) => {
 
+  const handleChange = ({ids = [], field, value}) => {
+    onChange({
+      field,
+      value,
+      ids: [query.id, ...ids]
+    })
+  }
+
+  const handleOnAdd = ({ids = []}) => {
+    onAdd({
+      ids: [query.id, ...ids]
+    })
+  }
+
+  const handleOnRemove = ({ids = []}) => {
+    onRemove({
+      ids: [query.id, ...ids]
+    })
+  }
+
   const selectQueryType = () => {
-    if (query.type === 'where') {
+    if (query.type === 'WHERE') {
       return (
-        <WhereTarget
-          onChange={onChange}
-          query={query}
-          base={base}
-          tables={tables}
-          csvRecords={csvRecords}
-        />
+      <WhereTarget
+        query={query}
+        base={base}
+        tables={tables}
+        csvRecords={csvRecords}
+        isChild={isChild}
+        onChange={handleChange}
+        onRemove={handleOnRemove}
+      />
       )
     } else {
       return (
         <AndOrTarget
-          onChange={onChange}
+          onChange={handleChange}
           query={query}
           base={base}
           tables={tables}
           csvRecords={csvRecords}
+          onAdd={handleOnAdd}
+          onRemove={handleOnRemove}
         />
       )
     }

@@ -7,7 +7,7 @@ export default class Query  extends BasicDomain{
   constructor(props = {}){
     super(props)
     this.id = props.id || (new Date()).getTime()
-    this.type = props.type || 'where'
+    this.type = props.type || 'WHERE'
     this.subQuerys = new QueryArray(props.subQuerys)
     this.table = props.table || null
     this.airtableField = props.airtableField || null
@@ -16,16 +16,74 @@ export default class Query  extends BasicDomain{
   }
 
   updateQuery(updateToken) {
-    console.log(':~:', __filename.split('/').pop(), 'method', 'updateToken', updateToken)
     const newQuery = this.clone()
-    if (this.type === 'where') {
+    const ids = updateToken.ids
+    ids.shift()
+    if (ids.length === 0) {
+      if (updateToken.field === 'type') {
+        return new Query({type: updateToken.value})
+      } else {
+        newQuery[updateToken.field] = updateToken.value
+        return newQuery
+      }
+    } else {
+      const subQueryItem = newQuery.subQuerys.get(ids[0])
+      const newSubQueryItem = subQueryItem.updateQuery({
+        ...updateToken,
+        ids
+      })
+      newQuery.subQuerys.update(newSubQueryItem)
       newQuery[updateToken.field] = updateToken.value
       return newQuery
+    }
+  }
+  
+  addQuery(updateToken) {
+    const newQuery = this.clone()
+    const ids = updateToken.ids
+    ids.shift()
+    if (ids.length === 0) {
+      newQuery.subQuerys.push(new Query())
+      return newQuery
     } else {
-      // const ids = updateToken.ids
-      // const currentId = ids.pop()
-      // const newSubQueryItems = 
-      // newQuery.subQuerys.update()
+      const subQueryItem = newQuery.subQuerys.get(ids[0])
+      const newSubQueryItem = subQueryItem.addQuery({
+        ids
+      })
+      newQuery.subQuerys.update(newSubQueryItem)
+      newQuery[updateToken.field] = updateToken.value
+      return newQuery
+    }
+  }
+
+  removeQuery(updateToken) {
+    const newQuery = this.clone()
+    const ids = updateToken.ids
+    ids.shift()
+    if (ids.length === 1) {
+      const idToRemove =  ids[0]
+      newQuery.subQuerys = newQuery.subQuerys.filter(q => q.id !== idToRemove)
+      return newQuery
+    } else {
+      const subQueryItem = newQuery.subQuerys.get(ids[0])
+      const newSubQueryItem = subQueryItem.addQuery({
+        ids
+      })
+      newQuery.subQuerys.update(newSubQueryItem)
+      newQuery[updateToken.field] = updateToken.value
+      return newQuery
+    }
+  }
+
+  getActionToken() {
+    return {
+      id: this.id,
+      type: this.type,
+      subQuerys: this.subQuerys.getActionToken(),
+      table: this.table,
+      airtableField: this.airtableField,
+      rule: this.rule,
+      csvField: this.csvField,
     }
   }
 }

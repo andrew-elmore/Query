@@ -9,7 +9,22 @@ export function updateQuery (payload) {
   }
 }
 
+export function addQuery (payload) {
+  return {
+    type: 'QUERY_ADD',
+    payload
+  }
+}
+
+export function removeQuery (payload) {
+  return {
+    type: 'QUERY_REMOVE',
+    payload
+  }
+}
 
 export default {
   updateQuery,
+  addQuery,
+  removeQuery
 };

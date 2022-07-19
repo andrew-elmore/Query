@@ -12,7 +12,6 @@ function QueryScreen({
   tables,
   csvRecords,
   actions: {
-    AppStateActions,
     QueryActions
   }
 }) {
@@ -23,6 +22,8 @@ function QueryScreen({
           query={query}
           tables={tables}
           onChange={QueryActions.updateQuery}
+          onAdd={QueryActions.addQuery}
+          onRemove={QueryActions.removeQuery}
           base={base}
           csvRecords={csvRecords}
         />
