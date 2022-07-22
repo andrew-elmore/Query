@@ -17,11 +17,11 @@ export default class Query  extends BasicDomain{
 
   updateQuery(updateToken) {
     const newQuery = this.clone()
-    const ids = updateToken.ids
+    const ids = [...updateToken.ids]
     ids.shift()
     if (ids.length === 0) {
       if (updateToken.field === 'type') {
-        return new Query({type: updateToken.value})
+        return new Query({type: updateToken.value, id: this.id})
       } else {
         newQuery[updateToken.field] = updateToken.value
         return newQuery
@@ -40,34 +40,33 @@ export default class Query  extends BasicDomain{
   
   addQuery(updateToken) {
     const newQuery = this.clone()
-    const ids = updateToken.ids
+    const ids = [...updateToken.ids]
     ids.shift()
     if (ids.length === 0) {
-      newQuery.subQuerys.push(new Query())
+      newQuery.subQuerys.push(new Query(updateToken.queryProps))
       return newQuery
     } else {
       const subQueryItem = newQuery.subQuerys.get(ids[0])
       const newSubQueryItem = subQueryItem.addQuery({
+        ...updateToken,
         ids
       })
       newQuery.subQuerys.update(newSubQueryItem)
-      newQuery[updateToken.field] = updateToken.value
       return newQuery
     }
   }
 
   removeQuery(updateToken) {
     const newQuery = this.clone()
-    const ids = updateToken.ids
-    ids.shift()
-    if (ids.length === 1) {
-      const idToRemove =  ids[0]
+    const ids = [...updateToken.ids]
+    if (ids.length === 2) {
+      const idToRemove =  ids[1]
       newQuery.subQuerys = newQuery.subQuerys.filter(q => q.id !== idToRemove)
       return newQuery
     } else {
-      const subQueryItem = newQuery.subQuerys.get(ids[0])
-      const newSubQueryItem = subQueryItem.addQuery({
-        ids
+      const subQueryItem = newQuery.subQuerys.get(ids[1])
+      const newSubQueryItem = subQueryItem.removeQuery({
+        ids: ids.slice(1)
       })
       newQuery.subQuerys.update(newSubQueryItem)
       newQuery[updateToken.field] = updateToken.value

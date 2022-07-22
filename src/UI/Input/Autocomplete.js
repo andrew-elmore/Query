@@ -1,19 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@mui/styles';
 
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-
-  },
-
-}));
+import Autocomplete from '@mui/material/Autocomplete';
 
 const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, size}) => {
-  const classes = useStyles();
 
   const [textValue, setTextValue] = React.useState(value || '')
 
@@ -43,19 +34,19 @@ const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, s
 
   return (
     <Autocomplete
-      value={value || ''}
-      onChange={(e, value) => {onChange({ field, value: value })}}
       inputValue={textValue}
       onInputChange={(e, value) => {setTextValue(value)}}
+      value={value || ''}
+      onChange={(e, value) => {onChange({ field, value: value })}}
       options={options}
+      disablePortal
+      size={size}
+      renderInput={(params) => <TextField {...params} label={label || field} />}
+      onFocus={onFocus}
       getOptionLabel={getOptionLabel}
       getOptionSelected={getOptionSelected}
       getOptionValue={getOptionValue}
-      fullWidth
-      size={size}
-      renderInput={(params) => <TextField {...params} label={label || field} variant="outlined" />}
-      onFocus={onFocus}
-    /> 
+    />
   )
 };
 
