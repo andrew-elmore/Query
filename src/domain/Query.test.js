@@ -112,6 +112,7 @@ test('Query remove nested subquery', () => {
   expect(query.subQuerys[0].subQuerys.length).toBe(0);
 
 })
+
 test('Query update nested subquery', () => {
   let i = 1
   let query = new Query({id: i})
@@ -136,9 +137,7 @@ test('Query update nested subquery', () => {
     value: 'WHERE'
   })
 
-  
-
-  // expect(query.subQuerys[0].subQuerys.length).toBe(0);
+  expect(query.subQuerys[0].type).toBe('WHERE');
 
 })
 

@@ -33,7 +33,6 @@ export default class Query  extends BasicDomain{
         ids
       })
       newQuery.subQuerys.update(newSubQueryItem)
-      newQuery[updateToken.field] = updateToken.value
       return newQuery
     }
   }
