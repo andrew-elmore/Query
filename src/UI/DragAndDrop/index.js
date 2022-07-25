@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 
 
 function DragAndDrop({
-  items,
+  items = [],
   onUpdate,
   id,
   itemRender
