@@ -7,6 +7,7 @@ export default class Table  extends BasicDomain{
     super(props)
     this.id = props.id || null
     this.name = props.name || ''
+    this.fields = props.fields || []
     this.records = new RecordArray(props.records)
   }
 

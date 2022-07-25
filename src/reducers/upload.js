@@ -1,4 +1,4 @@
-import getTestData from "../tests/testData/data"
+import getTestData from "./../tests/defaultData"
 import CsvRecordArray from "../domain/CsvRecordArray"
 import CsvRecord from "../domain/CsvRecord"
 

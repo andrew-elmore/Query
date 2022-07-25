@@ -13,14 +13,13 @@ export default (base, useRecords) => {
 
     const recordsData = records.map((record) => {
       const cells = fields.map((f) => {
-        const cellsData = record.getCellValue(f.id)
-        console.log(':~:', __filename.split('/').pop(), 'method', 'cellsData', cellsData)
-        return {id: f.id}
+        return {id: f.id, value: record.getCellValueAsString(f.id)}
       })
       return {id: record.id, cells}
     })
     return {
       id: tableId,
+      name: table.name,
       fields: fields,
       records: recordsData
     }

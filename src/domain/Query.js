@@ -73,6 +73,52 @@ export default class Query  extends BasicDomain{
     }
   }
 
+  getRecordsFromBase(base, useRecords) {
+    const table = base.getTableById(this.table.id)
+    const tlId2FieldId = table.fields.filter(t => t.name === 'TL_ID2')[0].id
+    const records = [] 
+    useRecords(table.selectRecords()).forEach((record) => {
+      records.push({
+        id: record.id,
+        value: record.getCellValueAsString(this.airtableField.id),
+        TL_ID2: record.getCellValueAsString(tlId2FieldId)
+      })
+    })
+    return records
+  }
+
+  findExactMatches(csvValue, airtableRecords) {
+    return airtableRecords.filter((airtableRecord) => {
+      return airtableRecord.value === csvValue
+    })
+  }
+
+  findPartialMatches(csvValue, airtableRecords) {
+    return airtableRecords.filter((airtableRecord) => {
+      return airtableRecord.value.includes(csvValue)
+    })
+  }
+
+  runWhere(csvRecords, base, useRecords) {
+    const airtableRecords = this.getRecordsFromBase(base, useRecords)
+    return csvRecords.map((csvRecord) => {
+      const csvValue = csvRecord.currentFields[this.csvField]
+      const exactMatches = this.findExactMatches(csvValue, airtableRecords)
+      const partialMatches = this.findPartialMatches(csvValue, airtableRecords)
+      return {csvRecord: csvRecord.getActionToken(), exactMatches, partialMatches}
+    })
+  }
+
+  run(csvRecords, base, useRecords) {
+    if (this.type === "WHERE") {
+      return this.runWhere(csvRecords, base, useRecords)
+    } else if (this.type === "OR" || this.type === "AND") {
+      throw ('Unsupported Query Type')
+    } else {
+      throw ('Unsupported Query Type')
+    }
+  }
+
   getActionToken = () => {
     return {
       id: this.id,

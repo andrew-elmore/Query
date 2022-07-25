@@ -3,6 +3,8 @@ import Query from './Query'
 import '@testing-library/jest-dom'
 import {simulateBase, simulateUseRecords} from './../tests/SimulatedAirtableClasses'
 
+import CsvRecordArray from './CsvRecordArray'
+import ResultArray from './ResultArray'
 
 
 test('Query can update', () => {
@@ -174,14 +176,15 @@ test('Query generates airtable fields list', () => {
 
 test('Query match single WHERE query', () => {
   const query = new Query({"id":1658191068337,"type":"WHERE","subQuerys":[],"table":{"id":"tbl08lD2U53OT9bBz","label":"UNFI"},"airtableField":{"id":"fldb2WLxhQCN1zYBl","label":"DISTB_ID"},"rule":"contains","csvField":"DISTB_ID"})
+  const csvRecords = new CsvRecordArray([{"id":1657931416763,"originalFields":{"DISTB_ID":"23445"},"currentFields":{"DISTB_ID":"23445"}},{"id":1657931416763,"originalFields":{"DISTB_ID":"33424"},"currentFields":{"DISTB_ID":"33424"}},{"id":1657931416763,"originalFields":{"DISTB_ID":"22344"},"currentFields":{"DISTB_ID":"22344"}}])
 
-  console.log(':~:', __filename.split('/').pop(), 'method', 'simulateBase.tables', simulateBase.tables[0].records)
   expect(query.type).toBe('WHERE');
   expect(simulateBase.tables.length).toBe(2)
   expect(simulateBase.tables[0].name).toBe('Products')
 
-  
+  const results = new ResultArray(query.run(csvRecords, simulateBase, simulateUseRecords))
 
+  console.log(':~:', __filename.split('/').pop(), 'method', 'results', results)
 
 
 })

@@ -12,6 +12,6 @@ export default class Base  extends BasicDomain{
   }
 
   getTableById(id) {
-    this.tables.get(id)
+    return this.tables.get(id)
   }
 }

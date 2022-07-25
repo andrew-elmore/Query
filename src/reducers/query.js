@@ -1,4 +1,4 @@
-import getTestData from "../tests/testData/data"
+import getTestData from "./../tests/defaultData"
 import Query from "./../domain/Query"
 
 const sliceName = 'query'

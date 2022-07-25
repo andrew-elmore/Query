@@ -4,7 +4,7 @@ import { useRecords } from '@airtable/blocks/ui';
 import { connect } from 'react-redux';
 import Grid from '@mui/material/Grid';
 import DragAndDrop from './../UI/DragAndDrop'
-import parseBaseAndTableData from './../tests/testData/parseBaseAndTableData'
+import parseBaseAndTableData from './../tests/SimulatedAirtableClasses/parseBaseAndTableData'
 
 function ViewScreen({
   base,
@@ -17,7 +17,6 @@ function ViewScreen({
   return (
     <Grid container>
       {/* {records.map((record) => {
-        console.log(':~:', __filename.split('/').pop(), 'method', 'record.getCellValue(TL_ID2)', record.getCellValue('fldb2WLxhQCN1zYBl') )
         return <Grid item xs={12}>
           {record.getCellValue('fldb2WLxhQCN1zYBl')}
         </Grid>

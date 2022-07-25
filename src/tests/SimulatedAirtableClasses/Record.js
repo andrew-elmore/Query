@@ -7,10 +7,10 @@ export default class Record  extends BasicDomain{
   constructor(props = {}){
     super(props)
     this.id = props.id || null
-    this.cells = props.cells
+    this.cells = new CellArray(props.cells)
   }
 
-  getCellValue(id) {
-    return this.cells[id]
+  getCellValueAsString(id) {
+    return this.cells.get(id).value
   }
 }

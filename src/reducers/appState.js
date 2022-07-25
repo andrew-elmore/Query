@@ -1,5 +1,4 @@
-import testData from './../tests/testData/data'
-import getTestData from "../tests/testData/data"
+import getTestData from "./../tests/defaultData"
 
 const sliceName = 'appState'
 
