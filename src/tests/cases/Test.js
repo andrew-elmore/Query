@@ -6,7 +6,8 @@ export default class Test  extends BasicDomain{
   constructor(props = {}){
     super(props)
     this.id = props.id || (new Date()).getTime()
-    this.title = props.title || ''
+    this.name = props.name || ''
     this.storeData = props.storeData || {}
   }
+
 }

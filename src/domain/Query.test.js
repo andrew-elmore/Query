@@ -3,6 +3,8 @@ import Query from './Query'
 import '@testing-library/jest-dom'
 import {simulateBase, simulateUseRecords} from './../tests/SimulatedAirtableClasses'
 
+import queryTestCases from './../tests/cases/query'
+
 import CsvRecordArray from './CsvRecordArray'
 import ResultArray from './ResultArray'
 
@@ -184,8 +186,20 @@ test('Query match single WHERE query', () => {
 
   const results = new ResultArray(query.run(csvRecords, simulateBase, simulateUseRecords))
 
-  console.log(':~:', __filename.split('/').pop(), 'method', 'results', results)
-
 
 })
 
+
+queryTestCases.forEach(({name, storeData}) => {
+  test(name, () => {
+    const query = new Query(storeData.query.query)
+    const csvRecords = new CsvRecordArray(storeData.upload.records)
+    const results = new ResultArray(query.run(csvRecords, simulateBase, simulateUseRecords))
+
+    results.forEach((result) => {
+      expect(result.exactMatches.length).toBe(parseInt(result.csvRecord.currentFields.exactMatches))
+      expect(result.partialMatches.length).toBe(parseInt(result.csvRecord.currentFields.partialMatches))
+      expect(!!result.match).toBe(JSON.parse(result.csvRecord.currentFields.match.toLowerCase()))
+    })
+  })
+})
