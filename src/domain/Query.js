@@ -99,6 +99,34 @@ export default class Query  extends BasicDomain{
     })
   }
 
+  flattenRecordResults (recordResults) {
+    const allExactMatchesObject = {}
+    const allPartialMatchesObject = {}
+    recordResults.forEach((recordResult) => {
+      recordResult.exactMatches.forEach((exactMatch) => {
+        allExactMatchesObject[JSON.stringify(exactMatch)] = true
+      })
+      recordResult.partialMatches.forEach((partialMatch) => {
+        allPartialMatchesObject[JSON.stringify(partialMatch)] = true
+      })
+    })
+    const allExactMatches = Object.keys(allExactMatchesObject).map(e => JSON.parse(e))
+    const allPartialMatches = Object.keys(allPartialMatchesObject).map(e => JSON.parse(e))
+    return {
+      allExactMatches,
+      allPartialMatches
+    }
+  }
+
+  resolveRecordAnd (recordResults) {
+    const exactMatches = []
+    const partialMatches = []
+    const {allExactMatches, allPartialMatches} = this.flattenRecordResults(recordResults)
+
+    console.log(':~:', __filename.split('/').pop(), 'method', 'allPartialMatches', allPartialMatches)
+    console.log(':~:', __filename.split('/').pop(), 'method', 'allExactMatches', allExactMatches)
+  }
+
   runWhere(csvRecords, base, useRecords) {
     const airtableRecords = this.getRecordsFromBase(base, useRecords)
     return csvRecords.map((csvRecord) => {
@@ -109,11 +137,26 @@ export default class Query  extends BasicDomain{
     })
   }
 
+  runAndOr(csvRecords, base, useRecords) {
+    const subQuerysResults = this.subQuerys.map(subQuery => subQuery.run(csvRecords, base, useRecords))
+    const recordsResults = [...csvRecords].map((record, idx) => {
+      return [...subQuerysResults].map((subQueryResults) => {
+        return subQueryResults[idx]
+      })
+    })
+    if (this.type = 'AND') {
+      recordsResults.map((recordResults) => { 
+        return this.resolveRecordAnd(recordResults)
+      })
+    }
+
+  }
+
   run(csvRecords, base, useRecords) {
     if (this.type === "WHERE") {
       return this.runWhere(csvRecords, base, useRecords)
     } else if (this.type === "OR" || this.type === "AND") {
-      throw ('Unsupported Query Type')
+      return this.runAndOr(csvRecords, base, useRecords)
     } else {
       throw ('Unsupported Query Type')
     }
