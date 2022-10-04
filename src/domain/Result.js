@@ -8,8 +8,8 @@ export default class Result  extends BasicDomain{
     super(props)
     this.id = props.id || (new Date()).getTime()
     this.csvRecord = new CsvRecord(props.csvRecord)
-    this.exactMatches = props.exactMatches
-    this.partialMatches = props.partialMatches
+    this.exactMatches = props.exactMatches || []
+    this.partialMatches = props.partialMatches || []
     this.match = this.findMatch()
   }
 
@@ -21,5 +21,12 @@ export default class Result  extends BasicDomain{
     } else {
       return false
     }
+  }
+
+  getExactMatchesTlIds () {
+    return this.exactMatches.map(match =>  match['TL_ID2'])
+  }
+  getPartialMatchesTlIds () {
+    return this.partialMatches.map(match =>  match['TL_ID2'])
   }
 }

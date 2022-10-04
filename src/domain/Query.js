@@ -1,5 +1,8 @@
 import BasicDomain from './BasicDomain'
 import QueryArray from './QueryArray'
+import ResultArray from './ResultArray'
+import Result from './Result'
+import UnresolvedResultsArray from './UnresolvedResultsArray'
 
 export default class Query  extends BasicDomain{
   get myClass() { return Query; }
@@ -118,43 +121,28 @@ export default class Query  extends BasicDomain{
     }
   }
 
-  resolveRecordAnd (recordResults) {
-    const exactMatches = []
-    const partialMatches = []
-    const {allExactMatches, allPartialMatches} = this.flattenRecordResults(recordResults)
-
-    console.log(':~:', __filename.split('/').pop(), 'method', 'allPartialMatches', allPartialMatches)
-    console.log(':~:', __filename.split('/').pop(), 'method', 'allExactMatches', allExactMatches)
-  }
-
   runWhere(csvRecords, base, useRecords) {
     const airtableRecords = this.getRecordsFromBase(base, useRecords)
     return csvRecords.map((csvRecord) => {
       const csvValue = csvRecord.currentFields[this.csvField]
       const exactMatches = this.findExactMatches(csvValue, airtableRecords)
       const partialMatches = this.findPartialMatches(csvValue, airtableRecords)
-      return {csvRecord: csvRecord.getActionToken(), exactMatches, partialMatches}
+      return new Result({csvRecord: csvRecord.getActionToken(), exactMatches, partialMatches})
     })
   }
 
   runAndOr(csvRecords, base, useRecords) {
-    const subQuerysResults = this.subQuerys.map(subQuery => subQuery.run(csvRecords, base, useRecords))
-    const recordsResults = [...csvRecords].map((record, idx) => {
-      return [...subQuerysResults].map((subQueryResults) => {
-        return subQueryResults[idx]
-      })
-    })
-    if (this.type = 'AND') {
-      recordsResults.map((recordResults) => { 
-        return this.resolveRecordAnd(recordResults)
-      })
+    const unresolvedRecords = new UnresolvedResultsArray(this.subQuerys.map(subQuery => subQuery.run(csvRecords, base, useRecords)))
+    if (this.type === "AND") {
+      return unresolvedRecords.resolveAndQuery()
+    } else if (this.type === "OR") {
+      return unresolvedRecords.resolveOrQuery()
     }
-
   }
 
   run(csvRecords, base, useRecords) {
     if (this.type === "WHERE") {
-      return this.runWhere(csvRecords, base, useRecords)
+      return new ResultArray(this.runWhere(csvRecords, base, useRecords))
     } else if (this.type === "OR" || this.type === "AND") {
       return this.runAndOr(csvRecords, base, useRecords)
     } else {
