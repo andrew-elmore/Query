@@ -42,6 +42,40 @@ const createAndQuery = () => {
   expect(query.subQuerys.length).toBe(2);
   return query
 }
+const createOrQuery = () => {
+  const query = new Query({
+    "id":1658191068337,
+    "type":"OR",
+    "subQuerys":[
+      {
+        "id":1664843792809,
+        "type":"WHERE",
+        "subQuerys":[],
+        "table":{"id":"tbl08lD2U53OT9bBz","label":"UNFI"},
+        "airtableField":{"id":"fldb2WLxhQCN1zYBl","label":"DISTB_ID"},
+        "rule":"contains",
+        "csvField":"DISTB_ID"
+      },
+      {
+        "id":1664843885218,
+        "type":"WHERE",
+        "subQuerys":[],
+        "table":{"id":"tbl08lD2U53OT9bBz","label":"UNFI"},
+        "airtableField":{"id":"fldM7Z0xGLSa4qr3S","label":"UPC"},
+        "rule":"contains",
+        "csvField":"UPC"
+      }
+    ],
+    "table":null,
+    "airtableField":null,
+    "rule":"contains",
+    "csvField":null
+  })
+
+  expect(query.type).toBe('OR');
+  expect(query.subQuerys.length).toBe(2);
+  return query
+}
 
 test('Query can update', () => {
   let query = new Query()
@@ -330,3 +364,62 @@ test('(WHERE && WHERE), contains, matches: 1/3, exact: 1/3, partial 1/3', () => 
 
 
 
+test('(WHERE || WHERE), contains, matches: 0/3, exact: 0/3, partial 0/3', () => {
+  const query = createOrQuery()
+  const csvRecords = new CsvRecordArray([
+    {"id":1657931416763,"originalFields":{"DISTB_ID":"00000", "UPC": '0000000000'},"currentFields":{"DISTB_ID":"00000", "UPC": '0000000000'}},
+    {"id":1657931416764,"originalFields":{"DISTB_ID":"00000", "UPC": '0000000000'},"currentFields":{"DISTB_ID":"00000", "UPC": '0000000000'}},
+    {"id":1657931416765,"originalFields":{"DISTB_ID":"00000", "UPC": '0000000000'},"currentFields":{"DISTB_ID":"00000", "UPC": '0000000000'}}
+  ])
+
+  expect(query.type).toBe('OR');
+  expect(simulateBase.tables.length).toBe(2)
+  expect(simulateBase.tables[0].name).toBe('Products')
+
+  const results = new ResultArray(query.run(csvRecords, simulateBase, simulateUseRecords))
+
+  expect(results.length).toBe(3)
+  expect(results.filter((r) => r.match).length).toBe(0)
+  expect(results.filter((r) => r.exactMatches.length > 0).length).toBe(0)
+  expect(results.filter((r) => r.partialMatches.length > 0).length).toBe(0)
+})
+
+test('(WHERE || WHERE), contains, matches: 1/3, exact: 1/3, partial 1/3', () => {
+  const query = createOrQuery()
+  const csvRecords = new CsvRecordArray([
+    {"id":1657931416763,"originalFields":{"DISTB_ID":"00000", "UPC": '446908180895'},"currentFields":{"DISTB_ID":"00000", "UPC": '446908180895'}},
+    {"id":1657931416764,"originalFields":{"DISTB_ID":"00000", "UPC": '0000000000'},"currentFields":{"DISTB_ID":"00000", "UPC": '0000000000'}},
+    {"id":1657931416765,"originalFields":{"DISTB_ID":"00000", "UPC": '0000000000'},"currentFields":{"DISTB_ID":"00000", "UPC": '0000000000'}}
+  ])
+
+  expect(query.type).toBe('OR');
+  expect(simulateBase.tables.length).toBe(2)
+  expect(simulateBase.tables[0].name).toBe('Products')
+
+  const results = new ResultArray(query.run(csvRecords, simulateBase, simulateUseRecords))
+
+  expect(results.length).toBe(3)
+  expect(results.filter((r) => r.match).length).toBe(1)
+  expect(results.filter((r) => r.exactMatches.length > 0).length).toBe(1)
+  expect(results.filter((r) => r.partialMatches.length > 0).length).toBe(1)
+})
+
+test('(WHERE || WHERE), contains, matches: 1/3, exact: 1/3, partial 1/3', () => {
+  const query = createOrQuery()
+  const csvRecords = new CsvRecordArray([
+    {"id":1657931416763,"originalFields":{"DISTB_ID":"55634", "UPC": '0000000000'},"currentFields":{"DISTB_ID":"55634", "UPC": '0000000000'}},
+    {"id":1657931416764,"originalFields":{"DISTB_ID":"00000", "UPC": '0000000000'},"currentFields":{"DISTB_ID":"00000", "UPC": '0000000000'}},
+    {"id":1657931416765,"originalFields":{"DISTB_ID":"00000", "UPC": '0000000000'},"currentFields":{"DISTB_ID":"00000", "UPC": '0000000000'}}
+  ])
+
+  expect(query.type).toBe('OR');
+  expect(simulateBase.tables.length).toBe(2)
+  expect(simulateBase.tables[0].name).toBe('Products')
+
+  const results = new ResultArray(query.run(csvRecords, simulateBase, simulateUseRecords))
+
+  expect(results.length).toBe(3)
+  expect(results.filter((r) => r.match).length).toBe(1)
+  expect(results.filter((r) => r.exactMatches.length > 0).length).toBe(0)
+  expect(results.filter((r) => r.partialMatches.length > 0).length).toBe(1)
+})

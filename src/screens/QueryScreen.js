@@ -1,10 +1,12 @@
 import React from 'react';
 import {actionProvider} from './../actions'
 import { connect } from 'react-redux';
+import { useRecords } from '@airtable/blocks/ui';
 
 import QueryTarget from './../component/QueryTarget'
 
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 
 function QueryScreen({
   query,
@@ -15,6 +17,12 @@ function QueryScreen({
     QueryActions
   }
 }) {
+
+  const handleRunQuery = () => {
+    const results = query.run(csvRecords, base, useRecords)
+    QueryActions.run(results)
+  }
+
   return (
     <Grid container style={{padding: 10}}>
       <Grid item xs={12}>
@@ -27,6 +35,15 @@ function QueryScreen({
           base={base}
           csvRecords={csvRecords}
         />
+      </Grid>
+      <Grid item xs={12}>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={handleRunQuery}
+        >
+          Run
+        </Button>
       </Grid>
     </Grid>
   )

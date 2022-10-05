@@ -84,7 +84,8 @@ export default class Query  extends BasicDomain{
       records.push({
         id: record.id,
         value: record.getCellValueAsString(this.airtableField.id),
-        TL_ID2: record.getCellValueAsString(tlId2FieldId)
+        TL_ID2: record.getCellValueAsString(tlId2FieldId),
+        record
       })
     })
     return records

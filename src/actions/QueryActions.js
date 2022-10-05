@@ -23,8 +23,16 @@ export function removeQuery (payload) {
   }
 }
 
+export function runQuery (payload) {
+  return {
+    type: 'QUERY_RUN',
+    payload
+  }
+}
+
 export default {
   updateQuery,
   addQuery,
-  removeQuery
+  removeQuery,
+  runQuery
 };
