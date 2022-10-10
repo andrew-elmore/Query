@@ -18,6 +18,18 @@ export default class Query  extends BasicDomain{
     this.csvField = props.csvField || null
   }
 
+  getTables () {
+    if (this.type === "WHERE") {
+      return [this.table]
+    } else if (this.type === "OR" || this.type === "AND") {
+      return this.subQuerys.map((sub) => {
+        return [...sub.getTables()]
+      })
+    } else {
+      throw ('Unsupported Query Type')
+    }
+  }
+
   updateQuery(updateToken) {
     const newQuery = this.clone()
     const ids = [...updateToken.ids]
@@ -76,19 +88,19 @@ export default class Query  extends BasicDomain{
     }
   }
 
-  getRecordsFromBase(base, useRecords) {
+  getRecordsFromBase(base, records) {
     const table = base.getTableById(this.table.id)
     const tlId2FieldId = table.fields.filter(t => t.name === 'TL_ID2')[0].id
-    const records = [] 
-    useRecords(table.selectRecords()).forEach((record) => {
-      records.push({
+    const selectedRecords = [] 
+    records[table._id].forEach((record) => {
+      selectedRecords.push({
         id: record.id,
         value: record.getCellValueAsString(this.airtableField.id),
         TL_ID2: record.getCellValueAsString(tlId2FieldId),
         record
       })
     })
-    return records
+    return selectedRecords
   }
 
   findExactMatches(csvValue, airtableRecords) {
@@ -122,8 +134,8 @@ export default class Query  extends BasicDomain{
     }
   }
 
-  runWhere(csvRecords, base, useRecords) {
-    const airtableRecords = this.getRecordsFromBase(base, useRecords)
+  runWhere(csvRecords, base, records) {
+    const airtableRecords = this.getRecordsFromBase(base, records)
     return csvRecords.map((csvRecord) => {
       const csvValue = csvRecord.currentFields[this.csvField]
       const exactMatches = this.findExactMatches(csvValue, airtableRecords)
@@ -132,8 +144,8 @@ export default class Query  extends BasicDomain{
     })
   }
 
-  runAndOr(csvRecords, base, useRecords) {
-    const unresolvedRecords = new UnresolvedResultsArray(this.subQuerys.map(subQuery => subQuery.run(csvRecords, base, useRecords)))
+  runAndOr(csvRecords, base, records) {
+    const unresolvedRecords = new UnresolvedResultsArray(this.subQuerys.map(subQuery => subQuery.run(csvRecords, base, records)))
     if (this.type === "AND") {
       return unresolvedRecords.resolveAndQuery()
     } else if (this.type === "OR") {
@@ -141,11 +153,11 @@ export default class Query  extends BasicDomain{
     }
   }
 
-  run(csvRecords, base, useRecords) {
+  run(csvRecords, base, records) {
     if (this.type === "WHERE") {
-      return new ResultArray(this.runWhere(csvRecords, base, useRecords))
+      return new ResultArray(this.runWhere(csvRecords, base, records))
     } else if (this.type === "OR" || this.type === "AND") {
-      return this.runAndOr(csvRecords, base, useRecords)
+      return this.runAndOr(csvRecords, base, records)
     } else {
       throw ('Unsupported Query Type')
     }

@@ -5,7 +5,8 @@ const sliceName = 'appState'
 const initState = getTestData(sliceName) || {
   tab: 0,
   base: {},
-  tables: []
+  tables: [],
+  records: {}
 }
 
 export default (state = initState, action) => {
@@ -25,6 +26,15 @@ export default (state = initState, action) => {
       return {
         ...state,
         ['tab']: action.payload
+      }
+      break;
+    case 'ADD_RECORDS':
+      return {
+        ...state,
+        ['records']: {
+          ...state.records,
+          ...action.payload
+        }
       }
       break;
   

@@ -1,10 +1,12 @@
 import getTestData from "./../tests/defaultData"
 import Query from "./../domain/Query"
+import ResultArray from "../domain/ResultArray"
 
 const sliceName = 'query'
 
 const initState = getTestData(sliceName) || {
-  query: new Query()
+  query: new Query(),
+  results: new ResultArray()
 }
 
 const name = 'QUERY'
@@ -36,6 +38,12 @@ export default (state = initState, action) => {
       return {
         ...state,
         query: state.query.removeQuery(action.payload)
+      }
+
+    case `${name}_RUN`:
+      return {
+        ...state,
+        results: new ResultArray(action.payload)
       }
   
     default:

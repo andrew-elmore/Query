@@ -17,8 +17,16 @@ export function init ({tables, base}) {
   }
 }
 
+export function addRecords (payload) {
+  return {
+    type: 'ADD_RECORDS',
+    payload
+  }
+}
+
 
 export default {
   init,
-  setTab
+  setTab,
+  addRecords
 };
