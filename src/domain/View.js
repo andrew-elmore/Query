@@ -6,6 +6,7 @@ export default class View  extends BasicDomain{
   constructor(props = {}){
     super(props)
     this.id = props.id || (new Date()).getTime()
+    this.table = props.table || null
     this.airtableField = props.airtableField || null
     this.csvField = props.csvField || null
     this.required = props.required || false

@@ -2,11 +2,13 @@ import { bindActionCreators } from 'redux';
 import AppStateActions from './AppStateActions'
 import UploadActions from './UploadActions'
 import QueryActions from './QueryActions'
+import ViewActions from './ViewActions'
 
 const actionsToBind = {
   AppStateActions,
   UploadActions,
-  QueryActions
+  QueryActions,
+  ViewActions
 };
 
 export default class Actions {
