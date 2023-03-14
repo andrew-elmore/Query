@@ -164,8 +164,6 @@ export default class Query  extends BasicDomain{
   }
 
   getQueryToken = (csvRecords) => {
-    console.log(':~:', __filename.split('/').pop(), 'method', 'csvRecords', csvRecords)
-    console.log(':~:', __filename.split('/').pop(), 'method', 'this.airtableField', this.airtableField)
     if (this.type === "WHERE") {
       return csvRecords.currentFields[this.csvField]? {
         url: `FIND("${csvRecords.currentFields[this.csvField]}",{${this.airtableField.label}})`,

@@ -11,6 +11,7 @@ import ActionScreen from './screens/ActionScreen';
 
 import NavBar from './component/NavBar';
 import Paper from '@mui/material/Paper';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import DevTools from './component/DevTools'
 
@@ -18,6 +19,7 @@ import DevTools from './component/DevTools'
 function App({
   tab,
   state,
+  queryProgress,
   actions: {
     AppStateActions
   }
@@ -64,6 +66,7 @@ function App({
         tab={tab}
         setTab={AppStateActions.setTab}
       />
+      {queryProgress > 0 && queryProgress < 100 && <LinearProgress variant="determinate" value={queryProgress} />}
       {screens[tab]}
       <DevTools
         state={state}
@@ -74,7 +77,8 @@ function App({
 
 const propMap = (store) => ({
   tab: store.appState.tab,
-  state: store
+  state: store,
+  queryProgress: store.query.progress
 });
 
 

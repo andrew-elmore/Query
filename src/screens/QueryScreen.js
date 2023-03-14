@@ -14,43 +14,42 @@ function QueryScreen({
   base,
   tables,
   csvRecords,
-  records,
   actions: {
     QueryActions,
     AppStateActions
   }
 }) {
-  const addRecords = (tableId, tableRecords) => {
-    if (!records[tableId]) {
-      AppStateActions.addRecords({
-        [tableId]: tableRecords
-      })
-    }
-  }
 
+  const runApiQueriesWithDelay = (queryTokenArray, base) => {
+    const delay = 1000/4; 
+    let index = 0;
+    let progress = 0;
+  
+    const intervalId = setInterval(() => {
+      if (index >= queryTokenArray.length) {
+        clearInterval(intervalId);
+        return;
+      }
+  
+      const queryToken = queryTokenArray[index];
+      progress = (index + 1) / queryTokenArray.length;
+      QueryActions.runApiQuery({queryToken, base, progress})
+      index++;
+    }, delay);
+  }
+   
   const handleRunQuery = () => {
     const queryTokenArray = [...csvRecords.map((csvRecord) => {
       return query.getQueryToken(csvRecord)
     })]
-    console.log(':~:', __filename.split('/').pop(), 'method', 'queryStrings', queryStrings)
-    console.log(':~:', __filename.split('/').pop(), 'method', 'base', base)
     QueryActions.runApiQuery({queryToken: queryTokenArray[0], base})
-
-    // QueryActions.runQuery(results)
+    runApiQueriesWithDelay(queryTokenArray, base)
     // AppStateActions.setTab(2)
   }
 
   return (
     <Grid container style={{padding: 10}}>
       <Grid item xs={12}>
-        {tables.map((table) => {
-          return (
-            <Table
-              table={table}
-              addRecords={addRecords}
-            />
-          )
-        })}
         <QueryTarget
           query={query}
           tables={tables}

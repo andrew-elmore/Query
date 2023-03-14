@@ -6,7 +6,8 @@ const sliceName = 'query'
 
 const initState = getTestData(sliceName) || {
   query: new Query(),
-  results: new ResultArray()
+  results: new ResultArray(),
+  progress: null
 }
 
 const name = 'QUERY'
@@ -44,6 +45,13 @@ export default (state = initState, action) => {
       return {
         ...state,
         results: new ResultArray(action.payload)
+      }
+    case `AIRTABLE_RUN_QUERY_FULFILLED`:
+      console.log(':~:', __filename.split('/').pop(), 'method', 'action.meta.progress * 100', action.meta.progress * 100)
+      return {
+        ...state,
+        progress: action.meta.progress * 100,
+
       }
   
     default:
