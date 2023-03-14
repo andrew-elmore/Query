@@ -163,6 +163,25 @@ export default class Query  extends BasicDomain{
     }
   }
 
+  getQueryToken = (csvRecords) => {
+    console.log(':~:', __filename.split('/').pop(), 'method', 'csvRecords', csvRecords)
+    console.log(':~:', __filename.split('/').pop(), 'method', 'this.airtableField', this.airtableField)
+    if (this.type === "WHERE") {
+      return csvRecords.currentFields[this.csvField]? {
+        url: `FIND("${csvRecords.currentFields[this.csvField]}",{${this.airtableField.label}})`,
+        table: this.table,
+      } : false
+    } else if (this.type === "OR" || this.type === "AND") {
+      const subQueryTokens = this.subQuerys
+        .map(subQuery => subQuery.getQueryToken(csvRecords))
+        .filter(t => t)
+        .join(`,`)
+      return {
+        url: `${this.type}(${subQueryTokens})`,
+        table: this.table,
+      }
+    }
+  }
   getActionToken = () => {
     return {
       id: this.id,

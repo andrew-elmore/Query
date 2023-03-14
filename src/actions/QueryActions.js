@@ -1,6 +1,9 @@
 // import {
-//   generateHeader, API
+//   generateHeader, API, AIRTABLE_API
 // } from './utils';
+
+import AirtableUtils from './AirtableUtils';
+
 
 export function updateQuery (payload) {
   return {
@@ -27,6 +30,13 @@ export function runQuery (payload) {
   return {
     type: 'QUERY_RUN',
     payload
+  }
+}
+
+export function runApiQuery (payload) {
+  return {
+    type: 'QUERY_API_RUN',
+    payload:  AirtableUtils.run({ baseName: 'Query' })(payload)
   }
 }
 

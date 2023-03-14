@@ -29,9 +29,15 @@ function QueryScreen({
   }
 
   const handleRunQuery = () => {
-    const results = query.run(csvRecords, base, records)
-    QueryActions.runQuery(results)
-    AppStateActions.setTab(2)
+    const queryTokenArray = [...csvRecords.map((csvRecord) => {
+      return query.getQueryToken(csvRecord)
+    })]
+    console.log(':~:', __filename.split('/').pop(), 'method', 'queryStrings', queryStrings)
+    console.log(':~:', __filename.split('/').pop(), 'method', 'base', base)
+    QueryActions.runApiQuery({queryToken: queryTokenArray[0], base})
+
+    // QueryActions.runQuery(results)
+    // AppStateActions.setTab(2)
   }
 
   return (
