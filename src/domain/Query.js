@@ -88,97 +88,28 @@ export default class Query  extends BasicDomain{
     }
   }
 
-  getRecordsFromBase(base, records) {
-    const table = base.getTableById(this.table.id)
-    const tlId2FieldId = table.fields.filter(t => t.name === 'TL_ID2')[0].id
-    const selectedRecords = [] 
-    records[table._id].forEach((record) => {
-      selectedRecords.push({
-        id: record.id,
-        value: record.getCellValueAsString(this.airtableField.id),
-        TL_ID2: record.getCellValueAsString(tlId2FieldId),
-        record
-      })
-    })
-    return selectedRecords
-  }
-
-  findExactMatches(csvValue, airtableRecords) {
-    return airtableRecords.filter((airtableRecord) => {
-      return airtableRecord.value === csvValue
-    })
-  }
-
-  findPartialMatches(csvValue, airtableRecords) {
-    return airtableRecords.filter((airtableRecord) => {
-      return airtableRecord.value.includes(csvValue)
-    })
-  }
-
-  flattenRecordResults (recordResults) {
-    const allExactMatchesObject = {}
-    const allPartialMatchesObject = {}
-    recordResults.forEach((recordResult) => {
-      recordResult.exactMatches.forEach((exactMatch) => {
-        allExactMatchesObject[JSON.stringify(exactMatch)] = true
-      })
-      recordResult.partialMatches.forEach((partialMatch) => {
-        allPartialMatchesObject[JSON.stringify(partialMatch)] = true
-      })
-    })
-    const allExactMatches = Object.keys(allExactMatchesObject).map(e => JSON.parse(e))
-    const allPartialMatches = Object.keys(allPartialMatchesObject).map(e => JSON.parse(e))
-    return {
-      allExactMatches,
-      allPartialMatches
-    }
-  }
-
-  runWhere(csvRecords, base, records) {
-    const airtableRecords = this.getRecordsFromBase(base, records)
-    return csvRecords.map((csvRecord) => {
-      const csvValue = csvRecord.currentFields[this.csvField]
-      const exactMatches = this.findExactMatches(csvValue, airtableRecords)
-      const partialMatches = this.findPartialMatches(csvValue, airtableRecords)
-      return new Result({csvRecord: csvRecord.getActionToken(), exactMatches, partialMatches})
-    })
-  }
-
-  runAndOr(csvRecords, base, records) {
-    const unresolvedRecords = new UnresolvedResultsArray(this.subQuerys.map(subQuery => subQuery.run(csvRecords, base, records)))
-    if (this.type === "AND") {
-      return unresolvedRecords.resolveAndQuery()
-    } else if (this.type === "OR") {
-      return unresolvedRecords.resolveOrQuery()
-    }
-  }
-
-  run(csvRecords, base, records) {
+  getQueryToken = (csvRecord) => {
     if (this.type === "WHERE") {
-      return new ResultArray(this.runWhere(csvRecords, base, records))
+      return csvRecord.currentFields[this.csvField]? [{
+        csvId: csvRecord.id,
+        queryId: this.id,
+        url: `FIND("${csvRecord.currentFields[this.csvField]}",{${this.airtableField.label}})`,
+        table: this.table,
+      }] : false
     } else if (this.type === "OR" || this.type === "AND") {
-      return this.runAndOr(csvRecords, base, records)
-    } else {
-      throw ('Unsupported Query Type')
+      const subQueryTokens = []
+      this.subQuerys.forEach((subQuery) => {
+        const subqueryToken = subQuery.getQueryToken(csvRecord)
+        if (subqueryToken) {
+          subQueryTokens.push(...subqueryToken)
+        }
+      })
+      return subQueryTokens
     }
   }
 
-  getQueryToken = (csvRecords) => {
-    if (this.type === "WHERE") {
-      return csvRecords.currentFields[this.csvField]? {
-        url: `FIND("${csvRecords.currentFields[this.csvField]}",{${this.airtableField.label}})`,
-        table: this.table,
-      } : false
-    } else if (this.type === "OR" || this.type === "AND") {
-      const subQueryTokens = this.subQuerys
-        .map(subQuery => subQuery.getQueryToken(csvRecords))
-        .filter(t => t)
-        .join(`,`)
-      return {
-        url: `${this.type}(${subQueryTokens})`,
-        table: this.table,
-      }
-    }
+  runMatches = (results) => {
+    
   }
   getActionToken = () => {
     return {

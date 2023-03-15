@@ -39,9 +39,11 @@ function QueryScreen({
   }
    
   const handleRunQuery = () => {
-    const queryTokenArray = [...csvRecords.map((csvRecord) => {
-      return query.getQueryToken(csvRecord)
-    })]
+    const queryTokenArray = []
+    csvRecords.forEach((csvRecord) => {
+      const queryTokens = query.getQueryToken(csvRecord)
+      queryTokenArray.push(...queryTokens)
+    })
     QueryActions.runApiQuery({queryToken: queryTokenArray[0], base})
     runApiQueriesWithDelay(queryTokenArray, base)
     // AppStateActions.setTab(2)

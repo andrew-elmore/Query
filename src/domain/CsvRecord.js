@@ -5,7 +5,7 @@ export default class CsvRecord  extends BasicDomain{
 
   constructor(props = {}){
     super(props)
-    this.id = props.id || (new Date()).getTime()
+    this.id = props.id || Math.floor(Math.random() * 1000000000000)
     this.originalFields = props.originalFields || []
     this.currentFields = props.originalFields || this.originalFields
   }

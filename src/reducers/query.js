@@ -1,12 +1,20 @@
 import getTestData from "./../tests/defaultData"
 import Query from "./../domain/Query"
 import ResultArray from "../domain/ResultArray"
-
+import MatchArray from "../domain/MatchArray"
 const sliceName = 'query'
 
-const initState = getTestData(sliceName) || {
-  query: new Query(),
+// const initState = getTestData(sliceName) || {
+//   query: new Query(),
+//   results: new ResultArray(),
+//   matches: new MatchArray(),
+//   progress: null
+// }
+const initState = {
+  query: getTestData(sliceName).query,
   results: new ResultArray(),
+  matches: new MatchArray(),
+  data: 0,
   progress: null
 }
 
@@ -41,17 +49,27 @@ export default (state = initState, action) => {
         query: state.query.removeQuery(action.payload)
       }
 
-    case `${name}_RUN`:
-      return {
-        ...state,
-        results: new ResultArray(action.payload)
-      }
     case `AIRTABLE_RUN_QUERY_FULFILLED`:
-      console.log(':~:', __filename.split('/').pop(), 'method', 'action.meta.progress * 100', action.meta.progress * 100)
-      return {
-        ...state,
-        progress: action.meta.progress * 100,
-
+      const newResults = state.results.add(
+        {
+          csvId: action.meta.queryToken.csvId,
+          queryId: action.meta.queryToken.queryId,
+          matches: action.payload.data.records.map(r => r.fields.TL_ID2)
+        }
+      )
+      if (action.meta.progress < 1) {
+        return {
+          ...state,
+          results: newResults,
+          progress: action.meta.progress * 100
+        }
+      } else {
+        return {
+          ...state,
+          matches: state.matches.runMatches(newResults, state.query),
+          progress: null,
+          results: new ResultArray()
+        }
       }
   
     default:
