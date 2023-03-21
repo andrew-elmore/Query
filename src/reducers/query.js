@@ -15,7 +15,9 @@ const initState = {
   results: new ResultArray(),
   matches: new MatchArray(),
   data: 0,
-  progress: null
+  progress: null,
+  pendingRequestCount: 0,
+  fulfilledRequestCount: 0
 }
 
 const name = 'QUERY'
@@ -48,27 +50,33 @@ export default (state = initState, action) => {
         ...state,
         query: state.query.removeQuery(action.payload)
       }
-
+    case "AIRTABLE_RUN_QUERY_PENDING":
+      return {
+        ...state,
+        pendingRequestCount: action.meta.pendingRequestCount
+      }
     case `AIRTABLE_RUN_QUERY_FULFILLED`:
       const newResults = state.results.add(
         {
           csvId: action.meta.queryToken.csvId,
           queryId: action.meta.queryToken.queryId,
-          matches: action.payload.data.records.map(r => r.fields.TL_ID2)
+          matches: action.payload.data.records.map(r => ({...r.fields, id: r.id})),
+          table: action.meta.queryToken.table
         }
       )
-      if (action.meta.progress < 1) {
-        return {
-          ...state,
-          results: newResults,
-          progress: action.meta.progress * 100
-        }
-      } else {
+
+      if (state.fulfilledRequestCount === state.pendingRequestCount) {
         return {
           ...state,
           matches: state.matches.runMatches(newResults, state.query),
           progress: null,
           results: new ResultArray()
+        }
+      } else {
+        return {
+          ...state,
+          results: newResults,
+          fulfilledRequestCount: state.fulfilledRequestCount + 1,
         }
       }
   

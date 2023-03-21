@@ -108,8 +108,69 @@ export default class Query  extends BasicDomain{
     }
   }
 
-  runMatches = (results) => {
-    
+  resolve = (resultChunk) => {
+    if (this.type === "WHERE") {
+      return resultChunk.filter((result) => result.queryId === this.id)[0] || []
+    } else if (this.type === "OR") {
+      const subQuerysResults = {} 
+      this.subQuerys.forEach((subQuery) => {
+        subQuerysResults[subQuery.id] = subQuery.resolve(resultChunk)
+      })
+      const indexField = 'TL_ID2'
+
+      const allResults = []
+      Object.values(subQuerysResults).forEach((subQueryResult) => {
+        subQueryResult.forEach((result) => {
+          if (!allResults.includes(result)) {
+            allResults.push(result)
+          }
+        })
+      })
+    } else if (this.type === "AND") {
+      const subQuerysResults = {} 
+      this.subQuerys.forEach((subQuery) => {
+        subQuerysResults[subQuery.id] = subQuery.resolve(resultChunk)
+      })
+
+      const allResultsFields = []
+      const primaryKeyField = 'TL_ID2'
+
+      Object.values(subQuerysResults).forEach((subQueryResult) => {
+        subQueryResult.matches.forEach((match) => {
+          if (!allResultsFields.includes(match)) {
+            allResultsFields.push(match)
+          }
+        })
+      })
+
+      const keyConversions = {}
+      allResultsFields.forEach((result) => {
+        const primaryKeyValue = result[primaryKeyField]
+        if (Array.isArray(primaryKeyValue)) {
+          primaryKeyValue.forEach((recordId) => {
+            const primaryKeyValue = allResultsFields.find((resultField) => {
+              return recordId === resultField.id
+            })
+            keyConversions[recordId] = primaryKeyValue[primaryKeyField]
+          })
+        } else if (primaryKeyValue.includes('rec')) {
+          const primaryKeyValue = allResultsFields.find((resultField) => {
+            return recordId === resultField.id
+          })
+          keyConversions[recordId] = primaryKeyValue[primaryKeyField]
+        } else {
+          keyConversions[primaryKeyValue] = primaryKeyValue
+        }
+      })
+
+      console.log(':~:', __filename.split('/').pop(), 'method', 'allResultsFields', allResultsFields)
+
+      console.log(':~:', __filename.split('/').pop(), 'method', 'subQuerysResults', subQuerysResults)
+
+      const inclusiveResults = []
+
+      
+    }
   }
   getActionToken = () => {
     return {

@@ -23,7 +23,6 @@ function QueryScreen({
   const runApiQueriesWithDelay = (queryTokenArray, base) => {
     const delay = 1000/4; 
     let index = 0;
-    let progress = 0;
   
     const intervalId = setInterval(() => {
       if (index >= queryTokenArray.length) {
@@ -32,8 +31,8 @@ function QueryScreen({
       }
   
       const queryToken = queryTokenArray[index];
-      progress = (index + 1) / queryTokenArray.length;
-      QueryActions.runApiQuery({queryToken, base, progress})
+      const pendingRequestCount = queryTokenArray.length;
+      QueryActions.runApiQuery({queryToken, base, pendingRequestCount})
       index++;
     }, delay);
   }

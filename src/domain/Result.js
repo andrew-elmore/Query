@@ -10,6 +10,7 @@ export default class Result  extends BasicDomain{
     this.csvId = props.csvId || null
     this.queryId = props.queryId || null
     this.matches = props.matches || []
+    this.table = props.table || null
   }
 
 }

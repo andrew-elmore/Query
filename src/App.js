@@ -66,7 +66,7 @@ function App({
         tab={tab}
         setTab={AppStateActions.setTab}
       />
-      {queryProgress > 0 && queryProgress < 100 && <LinearProgress variant="determinate" value={queryProgress} />}
+      {queryProgress > 0 && queryProgress < 100 && <LinearProgress variant="determinate" value={queryProgress * 100} />}
       {screens[tab]}
       <DevTools
         state={state}
@@ -78,7 +78,7 @@ function App({
 const propMap = (store) => ({
   tab: store.appState.tab,
   state: store,
-  queryProgress: store.query.progress
+  queryProgress: store.query.fulfilledRequestCount / (store.query.pendingRequestCount || 0)
 });
 
 
