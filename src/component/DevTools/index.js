@@ -11,11 +11,18 @@ const DevTools = ({
     Object.entries(state).forEach(([sliceName, slice]) => {
       const sliceToken = {}
       Object.entries(slice).forEach(([sectionName, sectionValues]) => {
-        if (typeof sectionValues.getActionToken === 'function') {
-          sliceToken[sectionName] = sectionValues.getActionToken()
-        } else if (!['tables', 'base'].includes(sectionName)){
+        try {
+          if (sectionValues === null) {
+            sliceToken[sectionName] = null
+          } else if (typeof sectionValues.getActionToken === 'function') {
+            sliceToken[sectionName] = sectionValues.getActionToken()
+          } else if (!['tables', 'base'].includes(sectionName)){
+            sliceToken[sectionName] = sectionValues
+          }
+        } catch (error) {
           sliceToken[sectionName] = sectionValues
-        } 
+          console.log('Could not get action token for', sliceName, sectionName, sectionValues, error)
+        }
       })
       stateToken[sliceName] = sliceToken
     })

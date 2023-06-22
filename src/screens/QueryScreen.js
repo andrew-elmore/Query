@@ -45,7 +45,7 @@ function QueryScreen({
     })
     QueryActions.runApiQuery({queryToken: queryTokenArray[0], base})
     runApiQueriesWithDelay(queryTokenArray, base)
-    // AppStateActions.setTab(2)
+    AppStateActions.setTab(2)
   }
 
   return (

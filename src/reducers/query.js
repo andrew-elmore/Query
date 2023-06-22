@@ -4,14 +4,8 @@ import ResultArray from "../domain/ResultArray"
 import MatchArray from "../domain/MatchArray"
 const sliceName = 'query'
 
-// const initState = getTestData(sliceName) || {
-//   query: new Query(),
-//   results: new ResultArray(),
-//   matches: new MatchArray(),
-//   progress: null
-// }
 const initState = {
-  query: getTestData(sliceName).query,
+  query: new Query(),
   results: new ResultArray(),
   matches: new MatchArray(),
   data: 0,
@@ -27,6 +21,10 @@ export default (state = initState, action) => {
       return {
         ...action.payload[sliceName],
         ...state
+      }
+    case 'INIT':
+      return {
+        ...state,
       }
     case `${name}_SET`:
       return {
@@ -68,9 +66,8 @@ export default (state = initState, action) => {
       if (state.fulfilledRequestCount === state.pendingRequestCount) {
         return {
           ...state,
-          matches: state.matches.runMatches(newResults, state.query),
+          results: newResults,
           progress: null,
-          results: new ResultArray()
         }
       } else {
         return {

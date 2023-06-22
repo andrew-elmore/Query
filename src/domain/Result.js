@@ -13,4 +13,12 @@ export default class Result  extends BasicDomain{
     this.table = props.table || null
   }
 
+
+  populateLinks = (results) => {
+    const newResults = this.clone().map((result) => {
+      return result.populateLinks(this)
+    })
+    return newResults
+  }
+
 }

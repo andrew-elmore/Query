@@ -16,6 +16,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import DevTools from './component/DevTools'
 
 
+
 function App({
   tab,
   state,
@@ -30,8 +31,29 @@ function App({
   React.useEffect(() => {
     if (base) {
       const tables = base._baseData.tableOrder.map((tableId) => {
-        return base.getTableById(tableId)
+        const table = base.getTableById(tableId)
+        const fields = table.fields.map(({id}) => {
+          const field = table.getFieldById(id)
+          const linkedTableId = field.options?.linkedTableId
+          const linkedTableName = linkedTableId ? base.getTableById(linkedTableId).name : null
+          return {
+            type: field.type,
+            name: field.name,
+            id: field.id,
+            linkedTable: linkedTableId ? {
+              id: linkedTableId,
+              name: linkedTableName,
+            } : null
+          }
+        })
+        return {
+          name: table.name,
+          id: table.id,
+          fields: fields
+        }
       })
+
+      console.log(':~:', __filename.split('/').pop(), 'method', 'tables', tables)
       AppStateActions.init({
         base,
         tables

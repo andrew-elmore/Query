@@ -37,7 +37,6 @@ export default (state = initState, action) => {
         }
       }
       break;
-  
     default:
       return state;
   }
