@@ -5,7 +5,7 @@ import MatchArray from "../domain/MatchArray"
 const sliceName = 'query'
 
 const initState = {
-  query: new Query(),
+  query: new Query(getTestData(sliceName).query),
   results: new ResultArray(),
   matches: new MatchArray(),
   data: 0,
@@ -62,7 +62,6 @@ export default (state = initState, action) => {
           table: action.meta.queryToken.table
         }
       )
-
       if (state.fulfilledRequestCount === state.pendingRequestCount) {
         return {
           ...state,
@@ -75,6 +74,11 @@ export default (state = initState, action) => {
           results: newResults,
           fulfilledRequestCount: state.fulfilledRequestCount + 1,
         }
+      }
+    case `${name}_RESOLVE`:
+      console.log(':~:', state.query.resolveQuery(action.payload, state.results))
+      return {
+        ...state,
       }
   
     default:

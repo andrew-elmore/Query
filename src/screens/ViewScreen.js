@@ -10,58 +10,44 @@ import Button from '@mui/material/Button';
 function ViewScreen({
   tables,
   csvRecords,
-  views,
+  view,
+  airtableFields,
+  csvFields,
   actions: {
     AppStateActions,
-    ViewActions
+    ViewActions,
+    QueryActions,
   }
 }) {
-  const csvFields = Object.keys(csvRecords[0].currentFields)
 
   const handleChange = (payload) => {
-    ViewActions.updateRow(payload)
+    ViewActions.update(payload)
   }
 
-  const handleRemove = (payload) => {
-    ViewActions.removeRow(payload)
+  const handleResolve = () => {
+    QueryActions.resolveQuery(csvRecords)
+    AppStateActions.setTab(3)
   }
 
   return (
     <Grid container>
-      <Grid item xs={3}>
-        <Typography>CSV Field</Typography>
-      </Grid>
-      <Grid item xs={9}>
-        <Typography>Airtable Field</Typography>
-      </Grid>
-      {views.map((view) => {
-        return (
+      {airtableFields.map((field, index) => (
+        <Grid item xs={12}>
           <ViewField
-            tables={tables}
+            key={index}
+            field={field}
             view={view}
             csvFields={csvFields}
-            onChange={handleChange}
-            onRemove={handleRemove}
+            handleChange={handleChange}
           />
-        )
-      })}
-      <Grid item xs={12}>
-        <Grid container justifyContent="center" alignItems="center">
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={() => { ViewActions.addRow() }}
-          >
-            Add Row
-          </Button>
         </Grid>
-      </Grid>
+      ))}
       <Grid item xs={12}>
         <Grid container justifyContent="flex-end" alignItems="center">
           <Button
             variant='contained'
             color='primary'
-            onClick={() => { AppStateActions.setTab(3) }}
+            onClick={handleResolve}
           >
             View
           </Button>
@@ -75,7 +61,9 @@ const propMap = (store) => ({
   base: store.appState.base,
   tables: store.appState.tables,
   csvRecords: store.upload.records,
-  views: store.view.view
+  view: store.view.view,
+  airtableFields: store.view.airtableFields,
+  csvFields: store.view.csvFields,
 });
 
 

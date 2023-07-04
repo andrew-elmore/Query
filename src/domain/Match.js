@@ -5,8 +5,8 @@ export default class Match  extends BasicDomain{
 
   constructor(props = {}){
     super(props)
-    this.id = props.id || null
-    this.csvId = props.csvId || null
+    this.id = props.id
+    this.csvId = props.csvId
     this.matches = props.matches || []
   }
 }

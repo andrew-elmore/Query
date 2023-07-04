@@ -41,7 +41,9 @@ function QueryScreen({
     const queryTokenArray = []
     csvRecords.forEach((csvRecord) => {
       const queryTokens = query.getQueryToken(csvRecord)
-      queryTokenArray.push(...queryTokens)
+      if (queryTokens) {
+        queryTokenArray.push(...queryTokens)
+      }
     })
     QueryActions.runApiQuery({queryToken: queryTokenArray[0], base})
     runApiQueriesWithDelay(queryTokenArray, base)

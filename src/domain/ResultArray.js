@@ -9,15 +9,9 @@ export default class ResultArray extends BasicArray {
     super(items)
   }
 
-  getAllMatches = () => {
-    return this.map((result) => {
-      return result.matches
-    }).flat()
-  }
-
-  populateLinks = (root) => {
-    const allMatches = this.getAllMatches()
-    console.log(':~:', __filename.split('/').pop(), 'method', 'allMatches', allMatches)
-
+  getMatches(csvId) {
+    return this.filter((result) => {
+      return result.csvId === csvId
+    })
   }
 }

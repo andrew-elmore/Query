@@ -10,9 +10,17 @@ export default class BasicArray extends Array {
         for (let i = 0; i < items.length; i += 1) {
             this.add(items[i]);
         }
+        this.assignIds();
         this.sort();
     }
 
+    assignIds = () => {
+        this.forEach((item, idx) => {
+            if (item.id === undefined) {
+                item.id = idx;
+            }
+        })
+    }
     clone = () => {
         const C = this.myClass;
         return new C(this);

@@ -2,7 +2,7 @@ import BasicDomain from './BasicDomain'
 import QueryArray from './QueryArray'
 import ResultArray from './ResultArray'
 import Result from './Result'
-import UnresolvedResultsArray from './UnresolvedResultsArray'
+import MatchArray from './MatchArray'
 
 export default class Query  extends BasicDomain{
   get myClass() { return Query; }
@@ -88,12 +88,16 @@ export default class Query  extends BasicDomain{
     }
   }
 
+  cleanString = (string) => {
+    return string.replace(/[^a-zA-Z0-9-]/g, "");
+  }
+
   getQueryToken = (csvRecord) => {
     if (this.type === "WHERE") {
       return csvRecord.currentFields[this.csvField]? [{
         csvId: csvRecord.id,
         queryId: this.id,
-        url: `FIND("${csvRecord.currentFields[this.csvField]}",{${this.airtableField.label}})`,
+        url: `FIND("${this.cleanString(csvRecord.currentFields[this.csvField].trim())}",{${this.airtableField.label}})`,
         table: this.table,
       }] : false
     } else if (this.type === "OR" || this.type === "AND") {
@@ -105,6 +109,28 @@ export default class Query  extends BasicDomain{
         }
       })
       return subQueryTokens
+    }
+  }
+
+  resolveQuery = (csvRecords, resultsArray) => {
+    return new MatchArray(csvRecords.map((csvRecord) => {
+      const matches = this.findMatches(csvRecord, resultsArray)
+        .map(m => m.matches)
+        .flat()
+      return {
+        csvId: csvRecord.id,
+        matches
+      }
+    }))
+  }
+
+  findMatches = (csvRecord, resultsArray) => {
+    if (this.type === "WHERE") {
+      return resultsArray.getMatches(csvRecord.id)
+    } else if (this.type === "OR") {
+      throw 'no OR support yet'
+    } else {
+      throw 'no AND support yet'
     }
   }
 

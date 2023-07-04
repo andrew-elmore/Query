@@ -53,7 +53,6 @@ function App({
         }
       })
 
-      console.log(':~:', __filename.split('/').pop(), 'method', 'tables', tables)
       AppStateActions.init({
         base,
         tables

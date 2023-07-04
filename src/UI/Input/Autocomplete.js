@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, size}) => {
+const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, size, multiple}) => {
 
   const [textValue, setTextValue] = React.useState(value || '')
 
@@ -34,6 +34,7 @@ const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, s
 
   return (
     <Autocomplete
+      multiple={multiple}
       inputValue={textValue}
       onInputChange={(e, value) => {setTextValue(value)}}
       value={value || ''}

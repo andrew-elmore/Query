@@ -6,19 +6,10 @@ export default class Result  extends BasicDomain{
 
   constructor(props = {}){
     super(props)
-    this.id = props.id || (new Date()).getTime()
-    this.csvId = props.csvId || null
+    this.id = props.id
+    this.csvId = props.csvId
     this.queryId = props.queryId || null
     this.matches = props.matches || []
     this.table = props.table || null
   }
-
-
-  populateLinks = (results) => {
-    const newResults = this.clone().map((result) => {
-      return result.populateLinks(this)
-    })
-    return newResults
-  }
-
 }

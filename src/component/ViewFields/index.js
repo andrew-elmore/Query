@@ -1,72 +1,59 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
-import Input from './../../UI/Input'
 import { makeStyles } from '@mui/styles';
-import View from './../../domain/View'
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+
+import Input from './../../UI/Input'
+
 
 const useStyles = makeStyles((theme) => ({
 
 }));
 
 const ViewField = ({
-  tables,
-  csvFields,
+  field,
   view,
-  onChange,
-  onRemove
+  csvFields,
+  handleChange
 }) => {
   const classes = useStyles();
-
-  const handleChange = ({field, value}) => {
-    const newView = new View({
-      ...view,
-      [field]: value
-    })
-    onChange(newView)
-  }
-  const tableFields = view.table ? (
-    view.table.fields
-  ) : ( [] )
-
+  const isVisible = view[field] === null || view[field]
   return (
     <Grid container alignItems="center">
-      <Grid item xs={3}>
+      <Grid item xs={5}>
+        {field}
+      </Grid>
+      <Grid item xs={5}>
+      {isVisible ? (
         <Input
+          field={field}
+          onChange={handleChange}
+          value={view[field]}
+          label='CSV Field'
           type="autocomplete"
-          field="csvField"
           options={csvFields}
-          onChange={handleChange}
-          value={view.csvField}
         />
+      ) : (
+        null
+      )}
       </Grid>
-      <Grid item xs={4}>
-        <Input
-          type="autocomplete"
-          field="table"
-          options={tables}
-          onChange={handleChange}
-          value={view.table}
-        />
-      </Grid>
-      <Grid item xs={4}>
-        {view.table ? (
-          <Input
-            type="autocomplete"
-            field="airtableField"
-            options={tableFields}
-            onChange={handleChange}
-            value={view.airtableField}
-          />
-        ) : (null)}
-      </Grid>
-      <Grid item xs={1}>
+      <Grid item xs={2}>
+        {isVisible ? (
           <IconButton
-            onClick={() => { onRemove(view) }}
+            onClick={() => { handleChange({ field: field, value: false }) }}
           >
-            <DeleteIcon/>
+            <VisibilityIcon/>
           </IconButton>
+          ) : (
+            <IconButton
+              onClick={() => { handleChange({ field: field, value: null }) }}
+            >
+              <VisibilityOffIcon/>
+            </IconButton>
+        )}
       </Grid>
     </Grid>
   );
