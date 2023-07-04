@@ -10,6 +10,13 @@ export default class CsvRecord  extends BasicDomain{
     this.currentFields = props.originalFields || this.originalFields
   }
 
+  isEmpty = () => {
+    return Object.values(this.originalFields).every((field) => {
+      console.log('isEmpty', field, field === '')
+      return field === ''
+    })
+  }
+
   getActionToken = () => {
     return {
       id: this.id,

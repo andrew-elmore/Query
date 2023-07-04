@@ -19,7 +19,7 @@ export default (state = initState, action) => {
     case `${name}_SET`:
       return {
         ...state,
-        records: new CsvRecordArray(action.payload)
+        records: new CsvRecordArray(action.payload).removeEmptyRecords()
       }
   
     default:

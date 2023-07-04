@@ -8,30 +8,45 @@ import ViewField from '../component/ViewFields';
 import Button from '@mui/material/Button';
 
 function ViewScreen({
-  tables,
-  csvRecords,
   view,
   airtableFields,
   csvFields,
+  query,
   actions: {
     AppStateActions,
     ViewActions,
     QueryActions,
   }
 }) {
+  const lockedFields = query.getViewFields()
+  React.useEffect(() => {
+    lockedFields.forEach((viewField) => {
+      const payload = {
+        field: Object.keys(viewField)[0],
+        value: Object.values(viewField)[0],
+      }
+      ViewActions.update(payload)
+    })
+  }, [airtableFields])
 
   const handleChange = (payload) => {
     ViewActions.update(payload)
   }
 
   const handleResolve = () => {
-    QueryActions.resolveQuery(csvRecords)
     AppStateActions.setTab(3)
   }
 
+  const sortedAndFilteredAirtableFields = [
+    ...airtableFields.filter((field) => view[field]),
+    ...airtableFields.filter((field) => view[field] === null),
+    ...airtableFields.filter((field) => view[field] === undefined),
+  ]
+
+  console.log(':~: lockedFields', lockedFields)
   return (
     <Grid container>
-      {airtableFields.map((field, index) => (
+      {sortedAndFilteredAirtableFields.map((field, index) => (
         <Grid item xs={12}>
           <ViewField
             key={index}
@@ -39,6 +54,7 @@ function ViewScreen({
             view={view}
             csvFields={csvFields}
             handleChange={handleChange}
+            locked={lockedFields.some(f => f[field])}
           />
         </Grid>
       ))}
@@ -64,6 +80,7 @@ const propMap = (store) => ({
   view: store.view.view,
   airtableFields: store.view.airtableFields,
   csvFields: store.view.csvFields,
+  query: store.query.query,
 });
 
 

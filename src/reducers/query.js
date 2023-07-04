@@ -57,7 +57,6 @@ export default (state = initState, action) => {
       const newResults = state.results.add(
         {
           csvId: action.meta.queryToken.csvId,
-          queryId: action.meta.queryToken.queryId,
           matches: action.payload.data.records.map(r => ({...r.fields, id: r.id})),
           table: action.meta.queryToken.table
         }
@@ -75,12 +74,6 @@ export default (state = initState, action) => {
           fulfilledRequestCount: state.fulfilledRequestCount + 1,
         }
       }
-    case `${name}_RESOLVE`:
-      console.log(':~:', state.query.resolveQuery(action.payload, state.results))
-      return {
-        ...state,
-      }
-  
     default:
       return state;
   }

@@ -89,48 +89,37 @@ export default class Query  extends BasicDomain{
   }
 
   cleanString = (string) => {
-    return string.replace(/[^a-zA-Z0-9-]/g, "");
+    return string.replace(/[^a-zA-Z0-9-]/g, "").trim();
   }
 
   getQueryToken = (csvRecord) => {
-    if (this.type === "WHERE") {
-      return csvRecord.currentFields[this.csvField]? [{
-        csvId: csvRecord.id,
-        queryId: this.id,
-        url: `FIND("${this.cleanString(csvRecord.currentFields[this.csvField].trim())}",{${this.airtableField.label}})`,
-        table: this.table,
-      }] : false
-    } else if (this.type === "OR" || this.type === "AND") {
-      const subQueryTokens = []
-      this.subQuerys.forEach((subQuery) => {
-        const subqueryToken = subQuery.getQueryToken(csvRecord)
-        if (subqueryToken) {
-          subQueryTokens.push(...subqueryToken)
-        }
-      })
-      return subQueryTokens
+    return {
+      csvId: csvRecord.id,
+      url: this.getQueryTokenUrl(csvRecord),
+      table: {id: 'tblGjRvH8jh5y1M4V', label: 'MDF'}
     }
   }
 
-  resolveQuery = (csvRecords, resultsArray) => {
-    return new MatchArray(csvRecords.map((csvRecord) => {
-      const matches = this.findMatches(csvRecord, resultsArray)
-        .map(m => m.matches)
-        .flat()
-      return {
-        csvId: csvRecord.id,
-        matches
-      }
-    }))
+  getQueryTokenUrl = (csvRecord) => {
+    if (this.type === "WHERE") {
+      return csvRecord.currentFields[this.csvField]? 
+        `FIND("${this.cleanString(csvRecord.currentFields[this.csvField])}",{${this.airtableField.label}})`
+        : ''
+    } else {
+      const subqueryTokens = this.subQuerys.map((subQuery) => {
+        return subQuery.getQueryTokenUrl(csvRecord)
+      }).join(', ')
+      return subqueryTokens? `${this.type}(${subqueryTokens})` : false
+    }
   }
 
-  findMatches = (csvRecord, resultsArray) => {
+  getViewFields = () => {
     if (this.type === "WHERE") {
-      return resultsArray.getMatches(csvRecord.id)
-    } else if (this.type === "OR") {
-      throw 'no OR support yet'
+      return {[this.airtableField.label]: this.csvField}
     } else {
-      throw 'no AND support yet'
+      return this.subQuerys.map((subQuery) => {
+        return subQuery.getViewFields()
+      }).flat()
     }
   }
 

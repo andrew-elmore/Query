@@ -8,8 +8,16 @@ export default class Result  extends BasicDomain{
     super(props)
     this.id = props.id
     this.csvId = props.csvId
-    this.queryId = props.queryId || null
     this.matches = props.matches || []
     this.table = props.table || null
   }
+
+  getActionToken = () => {
+    return {
+      id: this.id,
+      csvId: this.csvId,
+      matches: this.matches,
+      table: this.table,
+    }
+  };
 }

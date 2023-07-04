@@ -8,4 +8,11 @@ export default class CsvRecordArray extends BasicArray {
   constructor(items = []) {
     super(items)
   }
+
+  removeEmptyRecords = () => {
+    const newRecords = this.clone()
+    return newRecords.filter((i) => {
+      return !i.isEmpty()
+    })
+  }
 }
