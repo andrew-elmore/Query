@@ -6,9 +6,8 @@ import TextField from '@mui/material/TextField';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-
-  },
-
+    margin: theme.spacing(1),
+  }
 }));
 
 const MultilineInput = ({
@@ -18,6 +17,7 @@ const MultilineInput = ({
 
   return (
     <TextField 
+      className={classes.root}
       multiline
       size={size}
       minRows={rows}

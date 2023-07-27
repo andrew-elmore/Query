@@ -43,7 +43,6 @@ function ViewScreen({
     ...airtableFields.filter((field) => view[field] === undefined),
   ]
 
-  console.log(':~: lockedFields', lockedFields)
   return (
     <Grid container>
       {sortedAndFilteredAirtableFields.map((field, index) => (

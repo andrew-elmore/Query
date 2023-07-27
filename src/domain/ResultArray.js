@@ -9,6 +9,17 @@ export default class ResultArray extends BasicArray {
     super(items)
   }
 
+  update = (item) => {
+    const c = this.clone()
+    for (let i = 0, len = c.length; i < len; i += 1) {
+      console.log(c[i].csvId, item.csvId)
+      if (c[i].csvId === item.csvId) {
+        c[i] = item;
+      }
+    }
+    return c;
+  };
+
   getMatches(csvId) {
     return this.filter((result) => {
       return result.csvId === csvId

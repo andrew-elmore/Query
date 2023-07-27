@@ -9,9 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-
-  },
-
+    margin: theme.spacing(1),
+  }
 }));
 
 const MultiSelectInput = ({
@@ -19,7 +18,7 @@ const MultiSelectInput = ({
 }) => {
   const classes = useStyles();
   return (
-    <FormControl fullWidth variant="outlined" size={size}>
+    <FormControl fullWidth variant="outlined" size={size} className={classes.root}>
       <InputLabel id={`${label || field}-select-label`}>
         {label || field}
       </InputLabel>

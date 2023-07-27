@@ -6,9 +6,8 @@ import TextField from '@mui/material/TextField';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-
-  },
-
+    margin: theme.spacing(1),
+  }
 }));
 
 const DateInput = ({
@@ -32,6 +31,7 @@ const DateInput = ({
 
   return (
     <TextField
+      className={classes.root}
       size={size}
       fullWidth
       label={label ? label : field} 

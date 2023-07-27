@@ -12,7 +12,6 @@ export default class CsvRecord  extends BasicDomain{
 
   isEmpty = () => {
     return Object.values(this.originalFields).every((field) => {
-      console.log('isEmpty', field, field === '')
       return field === ''
     })
   }

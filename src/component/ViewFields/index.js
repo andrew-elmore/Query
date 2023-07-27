@@ -75,7 +75,7 @@ const ViewField = ({
       )}
       </Grid>
       <Grid item xs={2}>
-        <Grid container spacing={3} justifyContent="flex-end" alignItems="center">
+        <Grid container justifyContent="flex-end" alignItems="center">
           {icons()}
         </Grid>
       </Grid>

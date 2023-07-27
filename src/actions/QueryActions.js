@@ -33,10 +33,18 @@ export function runQuery (payload) {
   }
 }
 
+export function updateResult (payload) {
+  return {
+    type: 'QUERY_UPDATE_RESULT',
+    payload
+  }
+}
+
 export default {
   updateQuery,
   addQuery,
   removeQuery,
   runQuery,
+  updateResult,
   runApiQuery: AirtableUtils.run({ baseName: 'QUERY' }),
 };

@@ -1,7 +1,6 @@
 import BasicDomain from './BasicDomain'
 import QueryArray from './QueryArray'
 import ResultArray from './ResultArray'
-import Result from './Result'
 import MatchArray from './MatchArray'
 
 export default class Query  extends BasicDomain{

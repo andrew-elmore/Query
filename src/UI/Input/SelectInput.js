@@ -9,9 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-
-  },
-
+    margin: theme.spacing(1),
+  }
 }));
 
 const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, size}) => {
@@ -19,7 +18,7 @@ const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, s
   const labelId = `${label || field}-select-label`
   const sortedOptions = options.sort()
   return (
-    <FormControl fullWidth variant="outlined" size={size}>
+    <FormControl fullWidth variant="outlined" size={size} className={classes.root}>
       <InputLabel id={labelId}>
         {label || field}
       </InputLabel>

@@ -22,7 +22,6 @@ export default (state = initState, action) => {
       }
     case `UPLOAD_SET`:
       newCsvFields = state.csvFields || []
-      console.log(action.payload)
       action.payload.forEach((record) => {
         Object.keys(record.originalFields).forEach((field) => {
           if (newCsvFields.indexOf(field) === -1) {

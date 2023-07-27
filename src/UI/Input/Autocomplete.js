@@ -1,11 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@mui/styles';
 
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, size, multiple}) => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: theme.spacing(1),
+  }
+}));
 
+
+const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, size, multiple}) => {
+  const classes = useStyles();
   const [textValue, setTextValue] = React.useState(value || '')
 
 
@@ -34,6 +42,7 @@ const SelectInput = ({value, onChange, label, field, options, onFocus, onBlur, s
 
   return (
     <Autocomplete
+      className={classes.root}
       multiple={multiple}
       inputValue={textValue}
       onInputChange={(e, value) => {setTextValue(value)}}

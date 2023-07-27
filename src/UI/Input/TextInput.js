@@ -6,9 +6,8 @@ import TextField from '@mui/material/TextField';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-
-  },
-
+    margin: theme.spacing(1),
+  }
 }));
 
 const TextInput = ({
@@ -17,6 +16,7 @@ const TextInput = ({
   const classes = useStyles();
   return (
     <TextField
+      className={classes.root}
       size={size}
       type={type}
       fullWidth
@@ -24,7 +24,6 @@ const TextInput = ({
       variant="outlined" 
       value={value}
       autoComplete='off'
-      type="text"
       error={error}
       disabled={disabled}
       onChange={(e) => onChange({field, value: e.currentTarget.value})}

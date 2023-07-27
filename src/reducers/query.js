@@ -6,7 +6,7 @@ const sliceName = 'query'
 
 const initState = {
   query: new Query(getTestData(sliceName).query),
-  results: new ResultArray(),
+  results: new ResultArray(getTestData(sliceName).results),
   matches: new MatchArray(),
   data: 0,
   progress: null,
@@ -48,11 +48,19 @@ export default (state = initState, action) => {
         ...state,
         query: state.query.removeQuery(action.payload)
       }
+  
+    case `${name}_UPDATE_RESULT`:
+      return {
+        ...state,
+        results: state.results.update(action.payload)
+      }
+
     case "AIRTABLE_RUN_QUERY_PENDING":
       return {
         ...state,
         pendingRequestCount: action.meta.pendingRequestCount
       }
+
     case `AIRTABLE_RUN_QUERY_FULFILLED`:
       const newResults = state.results.add(
         {
@@ -74,6 +82,7 @@ export default (state = initState, action) => {
           fulfilledRequestCount: state.fulfilledRequestCount + 1,
         }
       }
+
     default:
       return state;
   }
