@@ -21,6 +21,7 @@ function ResultScreen({
   actions: {
     AppStateActions,
     QueryActions,
+    UploadActions,
   }
 }) {
   const classes = useStyles();
@@ -50,6 +51,10 @@ function ResultScreen({
     QueryActions.updateResult(result)
   }
 
+  const handleUpdateCSVRecord = (csvRecord) => {
+    UploadActions.update(csvRecord)
+  }
+
   return (
     <Grid container className={classes.root}>
       {unresolvedResults.slice(perPage * (unresolvedPage - 1), perPage * unresolvedPage).map((result, index) => {
@@ -60,6 +65,7 @@ function ResultScreen({
               view={viewConfig}
               csvRecords={csvRecords}
               handleChange={handleChangeResult}
+              handleUpdateCSVRecord={handleUpdateCSVRecord}
             />
           </Grid>
         )

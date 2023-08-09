@@ -4,9 +4,9 @@ import ResultArray from "../domain/ResultArray"
 import MatchArray from "../domain/MatchArray"
 const sliceName = 'query'
 
-const initState = {
-  query: new Query(getTestData(sliceName).query),
-  results: new ResultArray(getTestData(sliceName).results),
+const initState = getTestData(sliceName) || {
+  query: new Query(),
+  results: new ResultArray(),
   matches: new MatchArray(),
   data: 0,
   progress: null,

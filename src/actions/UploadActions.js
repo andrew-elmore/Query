@@ -12,7 +12,15 @@ export function uploadCsvData (data) {
   }
 }
 
+export function update (payload) {
+  return {
+    type: 'UPDATE_CSV',
+    payload
+  }
+}
+
 
 export default {
   uploadCsvData,
+  update,
 };

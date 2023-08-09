@@ -15,4 +15,13 @@ export default class CsvRecordArray extends BasicArray {
       return !i.isEmpty()
     })
   }
+
+  update = (item) => {
+    for (let i = 0, len = this.length; i < len; i += 1) {
+        if (this[i].id === item.id) {
+            this[i] = item;
+        }
+    }
+    return this;
+  };
 }

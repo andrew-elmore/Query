@@ -2,7 +2,7 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import { makeStyles } from '@mui/styles';
 import Resolved from './Resolved';
-import Unresolved from './Unresolved';
+import Unresolved from './Unresolved/index.js';
 import Input from './../../UI/Input'
 
 

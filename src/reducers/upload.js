@@ -21,6 +21,11 @@ export default (state = initState, action) => {
         ...state,
         records: new CsvRecordArray(action.payload).removeEmptyRecords()
       }
+    case `UPDATE_CSV`:
+      return {
+        ...state,
+        records: state.records.clone().update(action.payload)
+      }
   
     default:
       return state;
