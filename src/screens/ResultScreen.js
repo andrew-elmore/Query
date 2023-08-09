@@ -6,11 +6,19 @@ import Grid from '@mui/material/Grid';
 import Result from '../component/Result'
 import ViewArray from '../domain/ViewArray'
 import Pagination from '@mui/material/Pagination';
+import Button from '@mui/material/Button';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(1),
-  }
+  },
+  approveButton: {
+    backgroundColor: theme.palette.success.main,
+    margin: theme.spacing(1),
+    "&:hover": {
+      backgroundColor: theme.palette.success.dark
+    }
+  },
 }));
 
 function ResultScreen({
@@ -91,8 +99,24 @@ function ResultScreen({
     QueryActions.updateResult(result)
   }
 
+  const approveButton = () => (
+    <Grid item xs={12}>
+      <Grid container justifyContent="flex-end" alignItems="center">
+        <Button
+          variant='contained'
+          color='primary'
+          className={classes.approveButton}
+          onClick={() => {AppStateActions.setTab(4)}}
+        >
+          Approve
+        </Button>
+      </Grid>
+    </Grid>
+  )
+
   return (
     <Grid container className={classes.root}>
+      {approveButton()}
       {unresolvedResults.length > 0 ? (
         <>
           <Grid item xs={12}>Unresolved ({unresolvedResults.length})</Grid>
@@ -174,6 +198,7 @@ function ResultScreen({
           </Grid>
         </>
       ) : (null)}
+      {approveButton()}
     </Grid>
   );
 }
