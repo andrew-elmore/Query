@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import { makeStyles } from '@mui/styles';
-import Input from './../../UI/Input'
+import Input from '../../UI/Input'
 import Button from '@mui/material/Button';
 import FieldsDisplay from './FieldsDisplay'
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Resolved = ({
+const NotInDatabase = ({
   result,
   view,
   csvRecords,
@@ -50,7 +50,7 @@ const Resolved = ({
 
   return (
     <Grid container alignItems="center" className={classes.container}>
-      <Grid item xs={6}>
+      <Grid item xs={12}>
         <FieldsDisplay
           data={csvRecord}
           view={view}
@@ -58,41 +58,13 @@ const Resolved = ({
           canBeSearchable={false}
         />
       </Grid>
-      <Grid item xs={6}>
-        <FieldsDisplay
-          data={result.matches[0]}
-          view={view}
-          type='airtableField'
-          canBeSearchable={false}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container justifyContent="flex-end" alignItems="center">
-          <Button
-            variant='contained'
-            color='primary'
-            className={classes.rejectButton}
-            onClick={handleNotInDatabase}
-          >
-            Not in Database
-          </Button>
-          <Button
-            variant='contained'
-            color='primary'
-            className={classes.rejectButton}
-            onClick={handleReject}
-          >
-            Reject
-          </Button>
-        </Grid>
-      </Grid>
     </Grid>
   );
 }
 
 
-Resolved.propTypes = {
+NotInDatabase.propTypes = {
 
 };
 
-export default Resolved;
+export default NotInDatabase;

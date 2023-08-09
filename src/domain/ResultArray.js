@@ -12,13 +12,23 @@ export default class ResultArray extends BasicArray {
   update = (item) => {
     const c = this.clone()
     for (let i = 0, len = c.length; i < len; i += 1) {
-      console.log(c[i].csvId, item.csvId)
       if (c[i].csvId === item.csvId) {
-        c[i] = item;
+        c[i] = new Result(item);
       }
     }
     return c;
   };
+
+  addOrUpdate = (item) => {
+    const matchCount = this.filter((result) => {
+      return result.csvId === item.csvId
+    }).length
+    if (matchCount > 0) {
+      return this.update(item)
+    } else {
+      return this.add(item)
+    }
+  }
 
   getMatches(csvId) {
     return this.filter((result) => {

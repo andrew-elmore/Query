@@ -16,6 +16,7 @@ const initState = getTestData(sliceName) || {
 
 const name = 'QUERY'
 export default (state = initState, action) => {
+  let newResults
   switch (action.type) {
     case 'OVERIDE':
       return {
@@ -50,9 +51,19 @@ export default (state = initState, action) => {
       }
   
     case `${name}_UPDATE_RESULT`:
-      return {
-        ...state,
-        results: state.results.update(action.payload)
+      newResults = state.results.addOrUpdate(action.payload)
+      if (state.fulfilledRequestCount === state.pendingRequestCount) {
+        return {
+          ...state,
+          results: newResults,
+          progress: null,
+        }
+      } else {
+        return {
+          ...state,
+          results: newResults,
+          fulfilledRequestCount: state.fulfilledRequestCount + 1,
+        }
       }
 
     case "AIRTABLE_RUN_QUERY_PENDING":
@@ -62,7 +73,7 @@ export default (state = initState, action) => {
       }
 
     case `AIRTABLE_RUN_QUERY_FULFILLED`:
-      const newResults = state.results.add(
+      newResults = state.results.addOrUpdate(
         {
           csvId: action.meta.queryToken.csvId,
           matches: action.payload.data.records.map(r => ({...r.fields, id: r.id})),
@@ -82,6 +93,7 @@ export default (state = initState, action) => {
           fulfilledRequestCount: state.fulfilledRequestCount + 1,
         }
       }
+
 
     default:
       return state;

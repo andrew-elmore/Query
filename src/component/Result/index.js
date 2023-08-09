@@ -2,8 +2,8 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import { makeStyles } from '@mui/styles';
 import Resolved from './Resolved';
+import NotInDatabase from './NotInDatabase';
 import Unresolved from './Unresolved/index.js';
-import Input from './../../UI/Input'
 
 
 const Result = (props) => {
@@ -11,6 +11,8 @@ const Result = (props) => {
     return <Unresolved {...props}/>
   } else if (props.result.status === 'resolved') {
     return <Resolved {...props}/>
+  } else if (props.result.status === 'notInDatabase') {
+    return <NotInDatabase {...props}/>
   }
 }
 
