@@ -31,4 +31,15 @@ export default class Result  extends BasicDomain{
       status: this.status
     }
   };
+  getCsvData = (csvData) => {
+    if (!csvData) {
+      return {}
+    }
+    const csvRecord = csvData.find(csv => csv.id === this.csvId)
+    return csvRecord.currentFields
+  }
+
+  getAirtableData = () => {
+    return this.matches[0] || {}
+  }
 }
