@@ -40,11 +40,19 @@ export function updateResult (payload) {
   }
 }
 
+export function setQueryTables (payload) {
+  return {
+    type: 'QUERY_SET_TABLES',
+    payload
+  }
+}
+
 export default {
   updateQuery,
   addQuery,
   removeQuery,
   runQuery,
   updateResult,
+  setQueryTables,
   runApiQuery: AirtableUtils.run({ baseName: 'QUERY' }),
 };

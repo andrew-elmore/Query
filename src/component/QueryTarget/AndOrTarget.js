@@ -7,12 +7,11 @@ import Query from './index'
 
 const AndOrTarget = ({
   query,
-  base,
-  tables,
   csvRecords,
   onChange,
   onAdd,
-  onRemove
+  onRemove,
+  airtableFieldOptions
 }) => {
 
   return (
@@ -37,10 +36,9 @@ const AndOrTarget = ({
             <Query
               key={subquery.id}
               query={subquery}
-              base={base}
-              tables={tables}
               csvRecords={csvRecords}
               isChild={true}
+              airtableFieldOptions={airtableFieldOptions}
               onChange={onChange}
               onAdd={onAdd}
               onRemove={onRemove}

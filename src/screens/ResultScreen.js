@@ -27,6 +27,7 @@ function ResultScreen({
   query,
   csvRecords,
   base,
+  queryTables,
   actions: {
     AppStateActions,
     QueryActions,
@@ -86,7 +87,7 @@ function ResultScreen({
   const handleRunQuery = (records) => {
     const queryTokenArray = []
     records.forEach((csvRecord) => {
-      const queryToken = query.getQueryToken(csvRecord)
+      const queryToken = query.getQueryToken(csvRecord, queryTables)
       if (queryToken) {
         queryTokenArray.push(queryToken)
       }
@@ -209,6 +210,7 @@ const propMap = (store) => ({
   query: store.query.query,
   csvRecords: store.upload.records,
   base: store.appState.base,
+  queryTables: store.query.queryTables
 });
 
 

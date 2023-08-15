@@ -8,34 +8,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const WhereTarget = ({
   query,
-  base,
-  tables,
   csvRecords,
+  airtableFieldOptions,
   onChange,
   onRemove,
   isChild
 }) => {
-
-  const tableOptions = tables.map((t) => {
-    return ({
-      id: t.id,
-      label: t.name
-    })
-  })
-
-  const airtableFieldOptions = () => {
-    if (query.table?.id) {
-      const table = base.getTableById(query.table.id)
-      return table.fields.map((f) => {
-        return {
-          id: f.id,
-          label: f.name
-        }
-      })
-    } else {
-      return []
-    }
-  }
 
   const csvFieldOptions = () => {
     if (csvRecords) {
@@ -45,9 +23,23 @@ const WhereTarget = ({
     }
   }
 
+  const airtableFieldUnavailable = () => {
+    if (query.airtableField === null) {
+      return false
+    }
+    return !airtableFieldOptions.includes(query.airtableField)
+  }
+
+  const validation = () => {
+    const possibleErrors = [
+      airtableFieldUnavailable,
+    ]
+    return !possibleErrors.some(error => error())
+  }
+
   return (
-    <Grid container style={{margin: 5}}>
-      <Grid item xs={12} md={2}>
+    <Grid container style={!validation() ? {backgroundColor: 'red',  margin: 5} : {margin: 5}}>
+      <Grid item xs={12}  md={2}>
         <Input
           field="type"
           onChange={onChange}
@@ -61,27 +53,17 @@ const WhereTarget = ({
           ]}
         />
       </Grid>
-      <Grid item xs={12} md={2}>
-        <Input
-          field="table"
-          onChange={onChange}
-          value={query.table}
-          label='Table'
-          type="autocomplete"
-          options={tableOptions}
-        />
-      </Grid>
-      <Grid item xs={12} md={2}>
+      <Grid item xs={12} md={3}>
         <Input
           field="airtableField"
           onChange={onChange}
           value={query.airtableField}
           label='Airtable Field'
           type="autocomplete"
-          options={airtableFieldOptions()}
+          options={airtableFieldOptions}
         />
       </Grid>
-      <Grid item xs={12} md={2}>
+      <Grid item xs={12} md={3}>
         <Input
           field="rule"
           onChange={onChange}

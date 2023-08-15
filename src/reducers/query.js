@@ -2,9 +2,11 @@ import getTestData from "./../tests/defaultData"
 import Query from "./../domain/Query"
 import ResultArray from "../domain/ResultArray"
 import MatchArray from "../domain/MatchArray"
+import QueryTableArray from "../domain/QueryTableArray"
 const sliceName = 'query'
 
 const initState = getTestData(sliceName) || {
+  queryTables: QueryTableArray(),
   query: new Query(),
   results: new ResultArray(),
   matches: new MatchArray(),
@@ -48,6 +50,11 @@ export default (state = initState, action) => {
       return {
         ...state,
         query: state.query.removeQuery(action.payload)
+      }
+    case `${name}_SET_TABLES`:
+      return {
+        ...state,
+        queryTables: new QueryTableArray(action.payload)
       }
   
     case `${name}_UPDATE_RESULT`:

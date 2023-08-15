@@ -73,7 +73,6 @@ export default class ResultArray extends BasicArray {
       const row = []
       Object.keys(csvHeaders).forEach((header) => {
         const csvData = item.getCsvData(csv)
-        console.log(':~: csvData[header]', csvData[header])
         row.push(this.cleanDataForExport(csvData[header]))
       })
       row.push('')

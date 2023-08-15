@@ -13,6 +13,7 @@ const QueryTarget = ({
   tables,
   csvRecords,
   isChild,
+  airtableFieldOptions,
   onChange,
   onAdd,
   onRemove
@@ -43,10 +44,9 @@ const QueryTarget = ({
       return (
       <WhereTarget
         query={query}
-        base={base}
-        tables={tables}
         csvRecords={csvRecords}
         isChild={isChild}
+        airtableFieldOptions={airtableFieldOptions}
         onChange={handleChange}
         onRemove={handleOnRemove}
       />
@@ -59,6 +59,7 @@ const QueryTarget = ({
           base={base}
           tables={tables}
           csvRecords={csvRecords}
+          airtableFieldOptions={airtableFieldOptions}
           onAdd={handleOnAdd}
           onRemove={handleOnRemove}
         />

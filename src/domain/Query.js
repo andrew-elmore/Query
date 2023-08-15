@@ -12,6 +12,7 @@ export default class Query  extends BasicDomain{
     this.type = props.type || 'WHERE'
     this.subQuerys = new QueryArray(props.subQuerys)
     this.table = props.table || null
+    this.tables = props.tables || []
     this.airtableField = props.airtableField || null
     this.rule = props.rule || 'contains'
     this.csvField = props.csvField || null
@@ -91,7 +92,8 @@ export default class Query  extends BasicDomain{
     return string.replace(/[^a-zA-Z0-9-]/g, "").trim();
   }
 
-  getQueryToken = (csvRecord) => {
+  getQueryToken = (csvRecord, queryTables) => {
+    console.log(':~:', queryTables)
     return {
       csvId: csvRecord.id,
       url: this.getQueryTokenUrl(csvRecord),
