@@ -19,6 +19,7 @@ function ViewScreen({
   }
 }) {
   const lockedFields = query.getViewFields()
+  console.log(':~:', __filename.split('/').pop(), 'lockedFields', lockedFields)
   React.useEffect(() => {
     lockedFields.forEach((viewField) => {
       const payload = {
