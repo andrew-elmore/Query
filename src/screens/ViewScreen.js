@@ -12,14 +12,14 @@ function ViewScreen({
   airtableFields,
   csvFields,
   query,
+  fulfilledRequestCount,
+  pendingRequestCount,
   actions: {
     AppStateActions,
     ViewActions,
-    QueryActions,
   }
 }) {
   const lockedFields = query.getViewFields()
-  console.log(':~:', __filename.split('/').pop(), 'lockedFields', lockedFields)
   React.useEffect(() => {
     lockedFields.forEach((viewField) => {
       const payload = {
@@ -44,8 +44,25 @@ function ViewScreen({
     ...airtableFields.filter((field) => view[field] === undefined),
   ]
 
+  const nextButton = () => (
+      <Grid item xs={12}>
+        <Grid container justifyContent="flex-end" alignItems="center">
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={handleResolve}
+            disabled={fulfilledRequestCount !== pendingRequestCount}
+          >
+            View
+          </Button>
+        </Grid>
+      </Grid>
+  )
+
+
   return (
     <Grid container>
+      {nextButton()}
       {sortedAndFilteredAirtableFields.map((field, index) => (
         <Grid item xs={12}>
           <ViewField
@@ -58,17 +75,7 @@ function ViewScreen({
           />
         </Grid>
       ))}
-      <Grid item xs={12}>
-        <Grid container justifyContent="flex-end" alignItems="center">
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={handleResolve}
-          >
-            View
-          </Button>
-        </Grid>
-      </Grid>
+      {nextButton()}
     </Grid>
   );
 }
@@ -81,6 +88,8 @@ const propMap = (store) => ({
   airtableFields: store.view.airtableFields,
   csvFields: store.view.csvFields,
   query: store.query.query,
+  fulfilledRequestCount: store.query.fulfilledRequestCount,
+  pendingRequestCount: store.query.pendingRequestCount,
 });
 
 

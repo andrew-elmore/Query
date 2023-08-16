@@ -90,8 +90,6 @@ function ResultScreen({
       return query.getQueryToken(csvRecord, queryTables, base)
     }).flat()
 
-    console.log(':~:', __filename.split('/').pop(), 'handleRunQuery', 'queryTokenArray', queryTokenArray)
-
     runApiQueriesWithDelay(queryTokenArray)
   }
 

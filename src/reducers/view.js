@@ -34,7 +34,6 @@ export default (state = initState, action) => {
         csvFields: newCsvFields
       }
     case `QUERY_SET_TABLES`:
-      console.log(':~: QUERY_SET_TABLES', action.payload)
       const airtableFields = {}
       action.payload.forEach((tableData) => {
         tableData.fields.forEach((field) => {
@@ -42,16 +41,10 @@ export default (state = initState, action) => {
         })
       })
 
-      console.log(':~:', __filename.split('/').pop(), 'method', 'Object.keys(airtableFields)', Object.keys(airtableFields))
       return {
         ...state,
         airtableFields: Object.keys(airtableFields)
       }
-    // case `AIRTABLE_RUN_QUERY_FULFILLED`:
-    //   console.log(':~:', __filename.split('/').pop(), 'method', 'payload', action)
-    //   return {
-    //     ...state,
-    //   }
     case `${name}_UPDATE`:
       return {
         ...state,

@@ -6,7 +6,7 @@ import QueryTableArray from "../domain/QueryTableArray"
 const sliceName = 'query'
 
 const initState = getTestData(sliceName) || {
-  queryTables: QueryTableArray(),
+  queryTables: new QueryTableArray(),
   query: new Query(),
   results: new ResultArray(),
   matches: new MatchArray(),
