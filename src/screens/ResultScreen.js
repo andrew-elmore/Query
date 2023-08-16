@@ -84,16 +84,15 @@ function ResultScreen({
     }, delay);
   }
    
-  const handleRunQuery = (records) => {
-    const queryTokenArray = []
-    records.forEach((csvRecord) => {
-      const queryToken = query.getQueryToken(csvRecord, queryTables)
-      if (queryToken) {
-        queryTokenArray.push(queryToken)
-      }
-    })
+  const handleRunQuery = (csvRecord) => {
+    // :~: may be broken
+    const queryTokenArray = [...csvRecords].map((csvRecord) => {
+      return query.getQueryToken(csvRecord, queryTables, base)
+    }).flat()
 
-    runApiQueriesWithDelay(queryTokenArray, base)
+    console.log(':~:', __filename.split('/').pop(), 'handleRunQuery', 'queryTokenArray', queryTokenArray)
+
+    runApiQueriesWithDelay(queryTokenArray)
   }
 
   const handleSelectResult = (result) => {

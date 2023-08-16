@@ -20,8 +20,8 @@ const generateHeader = () => {
 
 const run = ({ baseName }) => (payload) => {
     const headers = generateHeader();
-    const {queryToken, base} = payload;
-    const params = base._baseData.id + '/' + queryToken.table.label + '?filterByFormula=' + queryToken.url;
+    const {queryToken} = payload;
+    const params = queryToken.url;
     return {
         type: `AIRTABLE_RUN_${baseName}`,
         meta: payload,

@@ -92,23 +92,33 @@ export default class Query  extends BasicDomain{
     return string.replace(/[^a-zA-Z0-9-]/g, "").trim();
   }
 
-  getQueryToken = (csvRecord, queryTables) => {
-    console.log(':~:', queryTables)
-    return {
-      csvId: csvRecord.id,
-      url: this.getQueryTokenUrl(csvRecord),
-      table: {id: 'tblGjRvH8jh5y1M4V', label: 'MDF'}
-    }
+  getQueryToken = (csvRecord, queryTables, base) => {
+    return queryTables.map(table => {
+      return ({
+        csvId: csvRecord.id,
+        table: table,
+        url: this.getTableQueryURL(csvRecord, table, base)
+      })
+    })
   }
 
-  getQueryTokenUrl = (csvRecord) => {
+  getTableQueryURL = (csvRecord, table, base) => {
+    return (
+      base._baseData.id + 
+      '/' + 
+      table.name + 
+      '?filterByFormula=' + 
+      this.getQueryUrl(csvRecord, table, base)
+    )
+  }
+  getQueryUrl = (csvRecord) => {
     if (this.type === "WHERE") {
       return csvRecord.currentFields[this.csvField]? 
-        `FIND("${this.cleanString(csvRecord.currentFields[this.csvField])}",{${this.airtableField.label}})`
+        `FIND("${this.cleanString(csvRecord.currentFields[this.csvField])}",{${this.airtableField}})`
         : ''
     } else {
       const subqueryTokens = this.subQuerys.map((subQuery) => {
-        return subQuery.getQueryTokenUrl(csvRecord)
+        return subQuery.getQueryUrl(csvRecord)
       }).join(', ')
       return subqueryTokens? `${this.type}(${subqueryTokens})` : false
     }

@@ -20,11 +20,15 @@ export default class ResultArray extends BasicArray {
   };
 
   addOrUpdate = (item) => {
-    const matchCount = this.filter((result) => {
+    const result = this.filter((result) => {
       return result.csvId === item.csvId
-    }).length
-    if (matchCount > 0) {
-      return this.update(item)
+    })[0]
+    if (result) {
+      const newItemToken = {
+        ...result,
+        matches: [...result.matches, ...item.matches]
+      }
+      return this.update(newItemToken)
     } else {
       return this.add(item)
     }

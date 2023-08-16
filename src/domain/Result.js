@@ -13,14 +13,13 @@ export default class Result  extends BasicDomain{
   }
 
   setStatus = (props) => {
+    if (props.matches.length === 1) {
+      return 'resolved'
+    }
     if (props.status) {
       return props.status
     }
-    if (props.matches.length === 1) {
-      return 'resolved'
-    } else {
-      return 'unresolved'
-    }
+    return 'unresolved'
   }
 
   getActionToken = () => {

@@ -23,7 +23,7 @@ function QueryScreen({
     AppStateActions
   }
 }) {
-  const runApiQueriesWithDelay = (queryTokenArray, base) => {
+  const runApiQueriesWithDelay = (queryTokenArray) => {
     const delay = 1000/4; 
     let index = 0;
   
@@ -35,21 +35,17 @@ function QueryScreen({
   
       const queryToken = queryTokenArray[index];
       const pendingRequestCount = queryTokenArray.length;
-      QueryActions.runApiQuery({queryToken, base, pendingRequestCount})
+      QueryActions.runApiQuery({queryToken, pendingRequestCount})
       index++;
     }, delay);
   }
    
   const handleRunQuery = () => {
-    const queryTokenArray = []
-    csvRecords.forEach((csvRecord) => {
-      const queryToken = query.getQueryToken(csvRecord, queryTables)
-      if (queryToken) {
-        queryTokenArray.push(queryToken)
-      }
-    })
+    const queryTokenArray = [...csvRecords].map((csvRecord) => {
+      return query.getQueryToken(csvRecord, queryTables, base)
+    }).flat()
 
-    runApiQueriesWithDelay(queryTokenArray, base)
+    runApiQueriesWithDelay(queryTokenArray)
     AppStateActions.setTab(2)
   }
 

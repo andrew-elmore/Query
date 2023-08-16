@@ -83,7 +83,10 @@ export default (state = initState, action) => {
       newResults = state.results.addOrUpdate(
         {
           csvId: action.meta.queryToken.csvId,
-          matches: action.payload.data.records.map(r => ({...r.fields, id: r.id})),
+          // matches: action.payload.data.records.map(r => ({...r.fields, id: r.id})),
+          matches: action.payload.data.records.map(r => {
+            return ({...r.fields, id: r.id})
+          }),
           table: action.meta.queryToken.table
         }
       )
