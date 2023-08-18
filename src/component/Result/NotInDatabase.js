@@ -51,12 +51,13 @@ const NotInDatabase = ({
   return (
     <Grid container alignItems="center" className={classes.container}>
       <Grid item xs={12}>
-        <FieldsDisplay
+        {/* <FieldsDisplay
           data={csvRecord}
           view={view}
           type='csvField'
           canBeSearchable={false}
-        />
+        /> */}
+        TEST
       </Grid>
     </Grid>
   );

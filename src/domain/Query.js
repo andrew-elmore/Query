@@ -126,7 +126,7 @@ export default class Query  extends BasicDomain{
 
   getViewFields = () => {
     if (this.type === "WHERE") {
-      return {[this.airtableField]: this.csvField}
+      return [{[this.airtableField]: this.csvField}]
     } else {
       return this.subQuerys.map((subQuery) => {
         return subQuery.getViewFields()

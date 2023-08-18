@@ -26,6 +26,7 @@ export default class ResultArray extends BasicArray {
     if (result) {
       const newItemToken = {
         ...result,
+        ...item,
         matches: [...result.matches, ...item.matches]
       }
       return this.update(newItemToken)

@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { makeStyles } from '@mui/styles';
 import FieldsDisplay from '../FieldsDisplay';
 import MatchCard from './MatchCard';
+import Result from '../../../domain/Result';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -39,7 +40,8 @@ const Unresolved = ({
   csvRecords,
   handleUpdateCSVRecord,
   onRunQuery,
-  onSelectResult
+  onSelectResult,
+  handleChange
 }) => {
   const classes = useStyles();
 
@@ -65,6 +67,15 @@ const Unresolved = ({
     onSelectResult(newResultData)
   }
  
+  const handleNotInDatabase = () => {
+    const newData = new Result({
+      ...result,
+      matches: [],
+      status: 'notInDatabase',
+    })
+    handleChange(newData)
+  }
+
   return (
     <Grid container alignItems="center" className={classes.container}>
       <Grid item xs={4} className={classes.currentFieldsContainer}>
@@ -90,38 +101,42 @@ const Unresolved = ({
             variant='contained'
             color='primary'
             className={classes.rejectButton}
-            onClick={handleRunQuery}
+            onClick={handleNotInDatabase}
           >
             Not In Database
           </Button>
         </Grid>
       </Grid>
       <Grid item xs={8}>
-        <MatchCard
-          index={matchIdx}
-          match={result.matches[matchIdx]}
-          view={view}
-        />
-        <Grid container justifyContent="center" alignItems="center">
-          <Button
-            variant='contained'
-            color='primary'
-            className={classes.approveButton}
-            onClick={handleSelectResult}
-          >
-            Select
-          </Button>
-        </Grid>
-        <Grid container justifyContent="center" alignItems="center">
-          <Pagination
-            className={classes.pagination}
-            siblingCount={0}
-            boundaryCount={1}
-            count={result.matches.length} 
-            page={matchIdx + 1} 
-            onChange={(e, v) => {setMatchIdx(v - 1)}}
-          />
-        </Grid>
+        {result.matches[matchIdx] ? (
+          <>
+            <MatchCard
+              index={matchIdx}
+              match={result.matches[matchIdx] || {}}
+              view={view}
+            />
+            <Grid container justifyContent="center" alignItems="center">
+              <Button
+                variant='contained'
+                color='primary'
+                className={classes.approveButton}
+                onClick={handleSelectResult}
+              >
+                Select
+              </Button>
+            </Grid>
+            <Grid container justifyContent="center" alignItems="center">
+              <Pagination
+                className={classes.pagination}
+                siblingCount={0}
+                boundaryCount={1}
+                count={result.matches.length} 
+                page={matchIdx + 1} 
+                onChange={(e, v) => {setMatchIdx(v - 1)}}
+              />
+            </Grid>
+          </>
+        ) : (null)}
       </Grid>
     </Grid>
   );

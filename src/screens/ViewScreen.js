@@ -19,6 +19,13 @@ function ViewScreen({
     ViewActions,
   }
 }) {
+  React.useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'auto',
+    });
+  }, [])
+  
   const lockedFields = query.getViewFields()
   React.useEffect(() => {
     lockedFields.forEach((viewField) => {

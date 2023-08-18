@@ -12,7 +12,8 @@ const Result = (props) => {
   } else if (props.result.status === 'resolved') {
     return <Resolved {...props}/>
   } else if (props.result.status === 'notInDatabase') {
-    return <NotInDatabase {...props}/>
+    return null
+    // return <NotInDatabase {...props}/>
   }
 }
 

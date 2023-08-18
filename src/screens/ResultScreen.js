@@ -86,6 +86,7 @@ function ResultScreen({
    
   const handleRunQuery = (csvRecord) => {
     // :~: may be broken
+    throw ('handleRunQuery is broken src/screens/ResultScreen.js')
     const queryTokenArray = [...csvRecords].map((csvRecord) => {
       return query.getQueryToken(csvRecord, queryTables, base)
     }).flat()

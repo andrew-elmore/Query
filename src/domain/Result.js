@@ -7,12 +7,15 @@ export default class Result  extends BasicDomain{
   constructor(props = {}){
     super(props)
     this.csvId = props.csvId
-    this.matches = props.matches || []
     this.table = props.table || null
     this.status = this.setStatus(props)
+    this.matches = this.setMatches(props)
   }
 
   setStatus = (props) => {
+    if (props.status === 'notInDatabase') {
+      return 'notInDatabase'
+    }
     if (props.matches.length === 1) {
       return 'resolved'
     }
@@ -20,6 +23,14 @@ export default class Result  extends BasicDomain{
       return props.status
     }
     return 'unresolved'
+  }
+
+  setMatches = (props) => {
+    if (props.status === 'notInDatabase') {
+      return []
+    } else {
+      return props.matches || []
+    }
   }
 
   getActionToken = () => {

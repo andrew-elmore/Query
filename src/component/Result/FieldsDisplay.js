@@ -46,7 +46,7 @@ const FieldsDisplay = ({
       {view.map((viewConfig) => {
         const field = viewConfig[type]
         return (
-          <Grid item xs={12} key={[data.id, type, field].join('-')}>
+          <Grid item xs={12}>
             <Input
               field={field}
               label={field}
