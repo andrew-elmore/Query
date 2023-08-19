@@ -17,7 +17,7 @@ const testData = {
 
 
 }
-const currentTestSet = 'demo2'
+const currentTestSet = 'demo'
 
 const sectionDomains = {
   appState: {

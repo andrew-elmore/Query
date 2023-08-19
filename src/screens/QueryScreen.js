@@ -1,16 +1,43 @@
 import React from 'react';
 import {actionProvider} from './../actions'
 import { connect } from 'react-redux';
-import { useRecords } from '@airtable/blocks/ui';
+import { makeStyles } from '@mui/styles';
 
 import QueryTarget from './../component/QueryTarget'
-import Table from './../component/QueryTarget/Table'
 import QueryTables from '../component/QueryTables';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import { Icon, IconButton, Typography } from '@mui/material';
+import ReplayIcon from '@mui/icons-material/Replay';
+import Query from '../domain/Query';
 
-import Input from '../UI/Input'
+const useStyles = makeStyles((theme) => ({
+  container: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    padding: theme.spacing(1),
+    border: `1px solid ${theme.palette.primary.dark}`,
+    borderRadius: theme.spacing(1),
+  },
+  pagination: {
+    margin: 10
+  },
+  approveButton: {
+    backgroundColor: theme.palette.success.main,
+    margin: theme.spacing(1),
+    "&:hover": {
+      backgroundColor: theme.palette.success.dark
+    }
+  },
+  rejectButton: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.error.main,
+    "&:hover": {
+      backgroundColor: theme.palette.error.dark
+    }
+  }
+}));
 
 function QueryScreen({
   query,
@@ -23,6 +50,7 @@ function QueryScreen({
     AppStateActions
   }
 }) {
+  const classes = useStyles();
   const runApiQueriesWithDelay = (queryTokenArray) => {
     const delay = 1000/4; 
     let index = 0;
@@ -52,19 +80,43 @@ function QueryScreen({
   const handleTableChange = (payload) => {
     QueryActions.setQueryTables(payload)
   }
+
+  const handleResetQuery = () => {
+    QueryActions.updateQuery(new Query())
+  }
   
   const airtableFieldOptions = queryTables.getFields()
 
   return (
     <Grid container style={{padding: 10}}>
+      <Grid item xs={6}>
+        <Typography className={classes.rejectIcon}>
+          Reset
+          <IconButton
+            onClick={handleResetQuery}
+          >
+            <ReplayIcon />
+          </IconButton>
+        </Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Grid container justifyContent="flex-end" alignItems="center">
+          <Button
+            className={classes.approveButton}
+            variant='contained'
+            color='primary'
+            onClick={handleRunQuery}
+          >
+            Run
+          </Button>
+        </Grid>
+      </Grid>
       <Grid item xs={12}>
         <QueryTables
           onChange={handleTableChange}
           values={queryTables}
           options={tables}
         />
-      </Grid>
-      <Grid item xs={12}>
       </Grid>
       <Grid item xs={12}>
         <QueryTarget
@@ -80,6 +132,7 @@ function QueryScreen({
       </Grid>
       <Grid item xs={12}>
         <Button
+          className={classes.approveButton}
           variant='contained'
           color='primary'
           onClick={handleRunQuery}
