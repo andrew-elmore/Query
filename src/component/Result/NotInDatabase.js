@@ -33,31 +33,23 @@ const NotInDatabase = ({
 
   const csvRecord = csvRecords.find(r => r.id === result.csvId).currentFields
 
-  const handleReject = () => {
-    handleChange({
-      ...result,
-      status: 'unresolved',
-    })
-  }
-
-  const handleNotInDatabase = () => {
-    handleChange({
-      ...result,
-      matches: [],
-      status: 'notInDatabase',
-    })
-  }
+  // const handleIsUnresolved = () => {
+  //   handleChange({
+  //     ...result,
+  //     matches: [],
+  //     status: 'unresolved',
+  //   })
+  // }
 
   return (
     <Grid container alignItems="center" className={classes.container}>
       <Grid item xs={12}>
-        {/* <FieldsDisplay
+        <FieldsDisplay
           data={csvRecord}
           view={view}
           type='csvField'
           canBeSearchable={false}
-        /> */}
-        TEST
+        />
       </Grid>
     </Grid>
   );
