@@ -13,7 +13,6 @@ export default class Result  extends BasicDomain{
   }
 
   setStatus = (props) => {
-    console.log(':~:', __filename.split('/').pop(), 'setStatus', 'props', props)
     if (props.status === 'notInDatabase') {
       return 'notInDatabase'
     }

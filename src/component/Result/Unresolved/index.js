@@ -55,7 +55,7 @@ const Unresolved = ({
   }
 
   const handleRunQuery = () => {
-    onRunQuery([csvRecord])
+    onRunQuery(csvRecord)
   }
 
   const handleSelectResult = () => {

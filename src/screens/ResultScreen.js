@@ -66,8 +66,8 @@ function ResultScreen({
   const handleUpdateCSVRecord = (csvRecord) => {
     UploadActions.update(csvRecord)
   }
-
-  const runApiQueriesWithDelay = (queryTokenArray, base) => {
+   
+  const runApiQueriesWithDelay = (queryTokenArray) => {
     const delay = 1000/4; 
     let index = 0;
   
@@ -79,18 +79,14 @@ function ResultScreen({
   
       const queryToken = queryTokenArray[index];
       const pendingRequestCount = queryTokenArray.length;
-      QueryActions.runApiQuery({queryToken, base, pendingRequestCount})
+      QueryActions.runApiQuery({queryToken, pendingRequestCount})
       index++;
     }, delay);
   }
    
   const handleRunQuery = (csvRecord) => {
-    // :~: may be broken
-    throw ('handleRunQuery is broken src/screens/ResultScreen.js')
-    const queryTokenArray = [...csvRecords].map((csvRecord) => {
-      return query.getQueryToken(csvRecord, queryTables, base)
-    }).flat()
-
+    console.log(':~:', __filename.split('/').pop(), 'method', 'csvRecord', csvRecord, 'valid: ', !Array.isArray(csvRecord))
+    const queryTokenArray = query.getQueryToken(csvRecord, queryTables, base)
     runApiQueriesWithDelay(queryTokenArray)
   }
 
