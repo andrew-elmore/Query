@@ -33,6 +33,13 @@ export function runQuery (payload) {
   }
 }
 
+export function queryReset (payload) {
+  return {
+    type: 'QUERY_RESET',
+    payload
+  }
+}
+
 export function updateResult (payload) {
   return {
     type: 'QUERY_UPDATE_RESULT',
@@ -54,5 +61,6 @@ export default {
   runQuery,
   updateResult,
   setQueryTables,
+  queryReset,
   runApiQuery: AirtableUtils.run({ baseName: 'QUERY' }),
 };

@@ -33,6 +33,11 @@ export default (state = {...initState, ...defaultState}, action) => {
         ...state,
         query: new Query(action.payload)
       }
+    case `${name}_RESET`:
+      return {
+        ...state,
+        query: new Query()
+      }
     case `${name}_UPDATE`:
       return {
         ...state,

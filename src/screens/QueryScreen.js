@@ -51,6 +51,17 @@ function QueryScreen({
   }
 }) {
   const classes = useStyles();
+
+  React.useEffect(() => {
+    if (csvRecords.length === 0) {
+      AppStateActions.setTab(0)
+    }
+  }, [])
+
+  if (csvRecords.length === 0) {
+    return null
+  }
+
   const runApiQueriesWithDelay = (queryTokenArray) => {
     const delay = 1000/4; 
     let index = 0;
@@ -82,7 +93,8 @@ function QueryScreen({
   }
 
   const handleResetQuery = () => {
-    QueryActions.updateQuery(new Query())
+    QueryActions.setQueryTables([])
+    QueryActions.queryReset()
   }
   
   const airtableFieldOptions = queryTables.getFields()
