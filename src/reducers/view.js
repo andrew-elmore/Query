@@ -15,11 +15,6 @@ export default (state = initState, action) => {
   let newCsvFields
   let newView
   switch (action.type) {
-    case 'OVERIDE':
-      return {
-        ...action.payload[sliceName],
-        ...state
-      }
     case `UPLOAD_SET`:
       newCsvFields = state.csvFields || []
       action.payload.forEach((record) => {

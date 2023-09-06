@@ -37,7 +37,7 @@ const sectionDomains = {
 
 
 const getTestData = (slice) => {
-  // return false
+  return false
   if (!testData[currentTestSet]) return {}
   if (slice === 'appState') {
     return {

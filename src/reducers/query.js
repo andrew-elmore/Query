@@ -5,7 +5,11 @@ import MatchArray from "../domain/MatchArray"
 import QueryTableArray from "../domain/QueryTableArray"
 const sliceName = 'query'
 
-const initState = getTestData(sliceName) || {
+const defaultState = {
+  ...getTestData(sliceName) 
+}
+
+const initState = {
   queryTables: new QueryTableArray(),
   query: new Query(),
   results: new ResultArray(),
@@ -17,14 +21,9 @@ const initState = getTestData(sliceName) || {
 }
 
 const name = 'QUERY'
-export default (state = initState, action) => {
+export default (state = {...initState, ...defaultState}, action) => {
   let newResults
   switch (action.type) {
-    case 'OVERIDE':
-      return {
-        ...action.payload[sliceName],
-        ...state
-      }
     case 'INIT':
       return {
         ...state,

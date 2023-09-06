@@ -11,11 +11,6 @@ const initState = getTestData(sliceName) || {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case 'OVERIDE':
-      return {
-        ...action.payload[sliceName],
-        ...state
-      }
     case 'INIT':
       return {
         ...state,
