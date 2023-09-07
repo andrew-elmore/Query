@@ -35,6 +35,8 @@ const sectionDomains = {
   }
 }
 
+// console.log(JSON.stringify(testData[currentTestSet].query.query))
+// console.log(JSON.stringify(testData[currentTestSet].query.queryTables))
 
 const getTestData = (slice) => {
   return false
