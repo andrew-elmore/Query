@@ -1,13 +1,9 @@
 import axios from 'axios';
-// // import Config from 'Config';
+import config from './../utils/config'
 
 export const AIRTABLE_API_URL = 'https://api.airtable.com/v0/';
 
 export const AIRTABLE_API = axios.create({ withCredentials: false, baseURL: AIRTABLE_API_URL });
-
-const config = {
-  AIRTABLE_API_KEY: 'keyHyLPdaCbr7AoxH'
-}
 
 const generateHeader = () => {
     const h = {
