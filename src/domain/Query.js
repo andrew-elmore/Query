@@ -145,4 +145,38 @@ export default class Query  extends BasicDomain{
       csvField: this.csvField,
     }
   }
+
+  queriesField = (field) => {
+    if (this.type === "WHERE") {
+      return this.airtableField === field
+    } else {
+      return this.subQuerys.some((subQuery) => {
+        return subQuery.queriesField(field)
+      })
+    }
+  }
+
+  findQueryByAirtableField = (field) => {
+    if (this.type === "WHERE") {
+      return this.airtableField === field? this : false
+    } else {
+      return this.subQuerys.find((subQuery) => {
+        return subQuery.findQueryByAirtableField(field)
+      })
+    }
+  }
+
+  getLinkToken = (linkedFields) => {
+    const relevantFields = linkedFields.filter((field) => {
+      return this.queriesField(field.name)
+    })
+    return relevantFields.map((field) => {
+      return {
+        ...field,
+        csvField: this.findQueryByAirtableField(field.name).csvField
+      }
+    })
+
+
+  }
 }

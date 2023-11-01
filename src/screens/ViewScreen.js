@@ -45,8 +45,6 @@ function ViewScreen({
     AppStateActions.setTab(3)
   }
 
-  console.log(':~:', __filename.split('/').pop(), 'method', 'airtableFields', airtableFields)
-
   const sortedAndFilteredAirtableFields = [
     ...airtableFields.filter((field) => view[field]),
     ...airtableFields.filter((field) => view[field] === null),
