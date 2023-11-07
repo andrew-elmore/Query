@@ -24,6 +24,20 @@ export default class AirtableDownloadField  extends BasicDomain{
     }
   }
 
+  getInclude = () => {
+    const includes = []
+    if (this.include) {
+      includes.push(this.name)
+    }
+    this.linkedFields.forEach((field) => {
+      const fieldIncludes = field.getInclude().map((include) => {
+        return `${this.name}.${include}`
+      })
+      includes.push(...fieldIncludes)
+    })
+    return includes
+  }
+
   getActionToken = () => {
     return {
       id: this.id,

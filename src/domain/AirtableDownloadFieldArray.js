@@ -23,4 +23,13 @@ export default class AirtableDownloadFieldArray extends BasicArray {
     item.linkedFields = linkedFields
     return newArray
   }
+
+  getInclude = () => {
+    const includes = []
+    this.forEach((item) => {
+      const itemInclude = item.getInclude()
+      includes.push(...itemInclude)
+    })
+    return includes
+  }
 }

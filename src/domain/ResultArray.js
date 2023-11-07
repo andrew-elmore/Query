@@ -70,8 +70,24 @@ export default class ResultArray extends BasicArray {
 
   }
 
-  getDownloadToken = (csv, airtableFields) => {
-    
+  getDownloadToken = (csvRecords, airtableFields) => {
+    const airtableKeys = airtableFields.getInclude()
+    return this.map((r) => {
+      const itemToken = {}
+
+      const csvRecord = csvRecords.find((record) => {
+        return record.id === r.csvId
+      })
+
+      Object.keys(csvRecord.originalFields).forEach((key) => {
+        itemToken[`CSV-${key}`] = this.cleanDataForExport(csvRecord.originalFields[key])
+      })
+      airtableKeys.forEach((path) => {
+        const key = path.split('.').pop()
+        itemToken[key] = this.cleanDataForExport(r.getAirtableValueFromKeyPath(path))
+      })
+      return itemToken
+    })
   }
 
   getAirtableFields = () => {

@@ -53,6 +53,21 @@ export default class Result  extends BasicDomain{
     return this.matches[0] || {}
   }
 
+  cleanValue = (value) => {
+    if (value.isArray()) {
+      
+    }
+  }
+
+  getAirtableValueFromKeyPath = (keyPath) => {
+    const keys = keyPath.split('.')
+    let value = this.getAirtableData()
+    keys.forEach((key) => {
+      value = value[key]
+    })
+    return value
+  }
+
   getLinkToken = (field) => {
     return {
       csvId: this.csvId,

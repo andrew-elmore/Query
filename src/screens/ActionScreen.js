@@ -50,7 +50,7 @@ function ActionScreen({
     if (results.length && csvRecords.length) {
       setExportData(results.getDownloadToken(csvRecords, airtableFields))
     }
-  }, [results, csvRecords])
+  }, [results, csvRecords, airtableFields])
 
   React.useEffect(() => {
     DownloadActions.setAirtableFields(results.getAirtableFields())
@@ -87,7 +87,7 @@ function ActionScreen({
         <Grid container justifyContent="flex-end" alignItems="center">
           <CSVDownloader
             filename={fileName}
-            data={() => {results.getDownloadToken(csvRecords, airtableFields)}}
+            data={exportData}
           >
             <Button
               className={classes.downloadButton}
