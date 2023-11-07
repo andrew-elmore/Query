@@ -85,7 +85,6 @@ function ResultScreen({
   }
    
   const handleRunQuery = (csvRecord) => {
-    console.log(':~:', __filename.split('/').pop(), 'method', 'csvRecord', csvRecord, 'valid: ', !Array.isArray(csvRecord))
     const queryTokenArray = query.getQueryToken(csvRecord, queryTables, base)
     runApiQueriesWithDelay(queryTokenArray)
   }

@@ -70,32 +70,30 @@ export default class ResultArray extends BasicArray {
 
   }
 
-  getDownloadToken = (csv) => {
-    const csvHeaders = {}
-    const airtableHeaders = {}
-    this.forEach((item) => {
-      Object.keys(item.getCsvData(csv)).forEach((header) => {
-        csvHeaders[header] = true
-      })
-      Object.keys(item.getAirtableData()).forEach((header) => {
-        airtableHeaders[header] = true
-      })
-    })
+  getDownloadToken = (csv, airtableFields) => {
+    
+  }
 
-    const exportData = this.map((item) => {
-      const row = []
-      Object.keys(csvHeaders).forEach((header) => {
-        const csvData = item.getCsvData(csv)
-        row.push(this.cleanDataForExport(csvData[header]))
+  getAirtableFields = () => {
+    const airtableFields = {}
+    this.forEach((result) => {
+      result.table.fields.forEach((field) => {
+        airtableFields[field.name] = field
       })
-      row.push('')
-      Object.keys(airtableHeaders).forEach((header) => {
-        const airtableData = item.getAirtableData()
-        row.push(this.cleanDataForExport(airtableData[header]))
-      })
-      return row
     })
-    exportData.unshift([...Object.keys(csvHeaders), '', ...Object.keys(airtableHeaders)])
-    return exportData
+    return Object.values(airtableFields)
+  }
+
+  addLinkedFields = (meta, payload) => {
+    const c = this.clone()
+    const item = c.find((result) => {
+      return result.csvId === meta.csvId
+    })
+    item.matches[0][meta.name] = payload.data.fields
+    return c
+  }
+
+  getLinkTokens = (field) => {
+    return this.map(r => r.getLinkToken(field))
   }
 }

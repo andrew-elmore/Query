@@ -13,7 +13,7 @@ import NavBar from './component/NavBar';
 import Paper from '@mui/material/Paper';
 import LinearProgress from '@mui/material/LinearProgress';
 
-// import DevTools from './component/DevTools'
+import DevTools from './component/DevTools'
 
 
 
@@ -89,9 +89,9 @@ function App({
       />
       {queryProgress > 0 && queryProgress < 100 && <LinearProgress variant="determinate" value={queryProgress * 100} />}
       {screens[tab]}
-      {/* <DevTools
+      <DevTools
         state={state}
-      /> */}
+      />
     </Paper>
   );
 }

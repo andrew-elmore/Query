@@ -48,7 +48,7 @@ export default (state = initState, action) => {
     case `AIRTABLE_RUN_QUERY_FULFILLED`:
       return {
         ...state,
-        view:  {...state.view, [action.payload.field]: action.payload.value}
+        // view:  {...state.view, [action.payload.field]: action.payload.value}
       }
     default:
       return state;

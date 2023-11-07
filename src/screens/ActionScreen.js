@@ -6,6 +6,7 @@ import { CSVDownloader } from 'react-papaparse';
 import { makeStyles } from '@mui/styles';
 import Button from '@mui/material/Button';
 import Input from '../UI/Input'
+import AirtableFieldSelect from '../component/ActionFieldSelect/airtableFieldSelect';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,23 +20,61 @@ const useStyles = makeStyles((theme) => ({
 function ActionScreen({
   results,
   csvRecords,
+  airtableFields,
+  baseId,
+  tables,
   actions: {
-    AppStateActions
+    DownloadActions
   }
 }) {
 
   const classes = useStyles();
 
+  const handleChangeAirtableFields = (ids, include) => {
+    DownloadActions.setAirtableFields(airtableFields.setIncludeByIds(ids, include))
+  }
+
+  const handleLink = (field) => {
+    const linkTokens = results.getLinkTokens(field)
+    linkTokens.forEach((token) => {
+      DownloadActions.link({...token, baseId, name: field.name})
+    })
+    const linkedTableId = field.linkedTable.id
+    const linkedFields = tables.filter(table => table.id === linkedTableId)[0]?.fields
+    DownloadActions.setAirtableFields(airtableFields.setLinkedFieldsById(field.id, linkedFields))
+  }
+
   const [exportData, setExportData] = React.useState([])
   const [fileName, setFileName] = React.useState('')
   React.useEffect(() => {
     if (results.length && csvRecords.length) {
-      setExportData(results.getDownloadToken(csvRecords))
+      setExportData(results.getDownloadToken(csvRecords, airtableFields))
     }
   }, [results, csvRecords])
 
+  React.useEffect(() => {
+    DownloadActions.setAirtableFields(results.getAirtableFields())
+  }, [])
+
   return (
     <Grid container className={classes.root}>
+      {/* <Grid item xs={6}>
+      </Grid> */}
+      <Grid item xs={12}>
+        <Grid container>
+          {airtableFields.map((field) => {
+            return (
+              <Grid item xs={12}>
+                <AirtableFieldSelect
+                  field={field}
+                  onChange={handleChangeAirtableFields}
+                  onLink={handleLink}
+                />
+              </Grid>
+            )
+          })}
+        </Grid>
+      </Grid>
       <Grid item xs={8}>
         <Input
           label={'File Name'}
@@ -48,7 +87,7 @@ function ActionScreen({
         <Grid container justifyContent="flex-end" alignItems="center">
           <CSVDownloader
             filename={fileName}
-            data={exportData}
+            data={() => {results.getDownloadToken(csvRecords, airtableFields)}}
           >
             <Button
               className={classes.downloadButton}
@@ -66,7 +105,10 @@ function ActionScreen({
 
 const propMap = (store) => ({
   results: store.query.results,
-  csvRecords: store.upload.records
+  csvRecords: store.upload.records,
+  airtableFields: store.download.airtableFields,
+  baseId: store.appState.base._id,
+  tables: store.appState.tables
 });
 
 

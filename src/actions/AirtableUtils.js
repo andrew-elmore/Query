@@ -25,7 +25,18 @@ const run = ({ baseName }) => (payload) => {
     };
 }
 
+const link = () => (payload) => {
+    const headers = generateHeader();
+    const params = `https://api.airtable.com/v0/${payload.baseId}/${payload.tableId}/${payload.recordId}`;
+    return {
+        type: `LINK`,
+        meta: payload,
+        payload: AIRTABLE_API.get(params, { headers }),
+    };
+}
+
 export default {
   generateHeader,
-  run
+  run,
+  link
 }

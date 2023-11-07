@@ -52,4 +52,12 @@ export default class Result  extends BasicDomain{
   getAirtableData = () => {
     return this.matches[0] || {}
   }
+
+  getLinkToken = (field) => {
+    return {
+      csvId: this.csvId,
+      tableId: field.linkedTable.id,
+      recordId: this.matches[0][field.name][0]
+    }
+  }
 }

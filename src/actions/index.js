@@ -3,12 +3,14 @@ import AppStateActions from './AppStateActions'
 import UploadActions from './UploadActions'
 import QueryActions from './QueryActions'
 import ViewActions from './ViewActions'
+import DownloadActions from './DownloadActions';
 
 const actionsToBind = {
   AppStateActions,
   UploadActions,
   QueryActions,
-  ViewActions
+  ViewActions,
+  DownloadActions
 };
 
 export default class Actions {

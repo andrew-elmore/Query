@@ -109,7 +109,11 @@ export default (state = {...initState, ...defaultState}, action) => {
         }
       }
 
-
+    case 'LINK_FULFILLED': 
+      return {
+        ...state,
+        results: state.results.addLinkedFields(action.meta, action.payload)
+      }
     default:
       return state;
   }
