@@ -89,9 +89,9 @@ function App({
       />
       {queryProgress > 0 && queryProgress < 100 && <LinearProgress variant="determinate" value={queryProgress * 100} />}
       {screens[tab]}
-      <DevTools
+      {/* <DevTools
         state={state}
-      />
+      /> */}
     </Paper>
   );
 }
