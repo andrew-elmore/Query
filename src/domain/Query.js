@@ -103,14 +103,20 @@ export default class Query  extends BasicDomain{
   }
 
   getTableQueryURL = (csvRecord, table, base) => {
-    return (
-      base._baseData.id + 
-      '/' + 
-      table.name + 
-      '?filterByFormula=' + 
-      this.getQueryUrl(csvRecord, table, base)
-    )
+    const queryUrl = this.getQueryUrl(csvRecord, table, base)
+    if (queryUrl) {
+      return (
+        base._baseData.id + 
+        '/' + 
+        table.name + 
+        '?filterByFormula=' + 
+        queryUrl
+      )
+    } else {
+      return false
+    }
   }
+
   getQueryUrl = (csvRecord) => {
     if (this.type === "WHERE") {
       return csvRecord.currentFields[this.csvField]? 
@@ -119,8 +125,16 @@ export default class Query  extends BasicDomain{
     } else {
       const subqueryTokens = this.subQuerys.map((subQuery) => {
         return subQuery.getQueryUrl(csvRecord)
-      }).join(', ')
-      return subqueryTokens? `${this.type}(${subqueryTokens})` : false
+      })
+      .filter(token => token)
+      .join(', ')
+      if (subqueryTokens.length > 1) {
+        return `${this.type}(${subqueryTokens})`
+      } else if (subqueryTokens.length === 1) {
+        return subqueryTokens[0]
+      } else {
+        return false
+      }
     }
   }
 

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Grid from '@mui/material/Grid';
 import CsvUpload from './../UI/CsvUpload'
 import Button from '@mui/material/Button';
-
+import Preview from './../component/Preview'
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(1),
@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 function UploadScreen({
   base,
   tables,
+  records,
   actions: {
     AppStateActions,
     UploadActions
@@ -51,15 +52,23 @@ function UploadScreen({
         <CsvUpload
           uploadData={(data) => {UploadActions.uploadCsvData(data)}}
         />
-        {continueButton()}
       </Grid>
+      <Grid item xs={12}>
+        <Grid container className={classes.root}>
+          <Preview
+            records={records}
+          />
+        </Grid>
+      </Grid>
+      {continueButton()}
     </Grid>
   );
 }
 
 const propMap = (store) => ({
   base: store.appState.base,
-  tables: store.appState.tables
+  tables: store.appState.tables,
+  records: store.upload.records
 });
 
 

@@ -5,6 +5,13 @@
 import AirtableUtils from './AirtableUtils';
 
 
+export function setQuery (payload) {
+  return {
+    type: 'QUERY_SET',
+    payload
+  }
+}
+
 export function updateQuery (payload) {
   return {
     type: 'QUERY_UPDATE',
@@ -55,6 +62,7 @@ export function setQueryTables (payload) {
 }
 
 export default {
+  setQuery,
   updateQuery,
   addQuery,
   removeQuery,

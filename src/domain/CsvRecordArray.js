@@ -24,4 +24,22 @@ export default class CsvRecordArray extends BasicArray {
     }
     return this;
   };
+
+  getFields = () => {
+    const fields = {}
+    this.forEach((item) => {
+      const itemFields = item.getFields()
+      itemFields.forEach((key) => {
+        fields[key] = true
+      })
+    })
+    return Object.keys(fields)
+  }
+
+  getRows = () => {
+    return this.map((item) => {
+      return item.getRow()
+    })
+  }
+
 }

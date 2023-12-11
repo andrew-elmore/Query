@@ -63,16 +63,25 @@ export default class Result  extends BasicDomain{
     const keys = keyPath.split('.')
     let value = this.getAirtableData()
     keys.forEach((key) => {
-      value = value[key]
+      if (!value) {
+        value = ''
+      } else {
+        value = value[key]
+      }
     })
     return value
   }
 
   getLinkToken = (field) => {
-    return {
-      csvId: this.csvId,
-      tableId: field.linkedTable.id,
-      recordId: this.matches[0][field.name][0]
+    try {
+      return {
+        csvId: this.csvId,
+        tableId: field.linkedTable.id,
+        recordId: this.matches[0][field.name][0]
+      }
+    } catch (e) {
+      console.error(e)
+      return false
     }
   }
 }

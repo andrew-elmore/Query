@@ -84,6 +84,11 @@ export default (state = {...initState, ...defaultState}, action) => {
         pendingRequestCount: action.meta.pendingRequestCount
       }
 
+    case `AIRTABLE_RUN_QUERY_EMPTY`:
+      return {
+        ...state,
+        fulfilledRequestCount: state.fulfilledRequestCount + 1,
+      }
     case `AIRTABLE_RUN_QUERY_FULFILLED`:
       newResults = state.results.addOrUpdate(
         {

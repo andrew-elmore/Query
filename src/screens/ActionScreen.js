@@ -35,7 +35,9 @@ function ActionScreen({
   }
 
   const handleLink = (field) => {
-    const linkTokens = results.getLinkTokens(field)
+    const linkTokens = results
+      .getLinkTokens(field)
+      .filter(token => token)
     linkTokens.forEach((token) => {
       DownloadActions.link({...token, baseId, name: field.name})
     })

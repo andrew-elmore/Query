@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import { Icon, IconButton, Typography } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
 import Query from '../domain/Query';
+import QueryUploader from '../component/QueryUploader';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -96,6 +97,11 @@ function QueryScreen({
     QueryActions.setQueryTables([])
     QueryActions.queryReset()
   }
+
+  const setQueryData = ({query, queryTables}) => {
+    QueryActions.setQueryTables(queryTables)
+    QueryActions.setQuery(query)
+  }
   
   const airtableFieldOptions = queryTables.getFields()
 
@@ -151,6 +157,13 @@ function QueryScreen({
         >
           Run
         </Button>
+      </Grid>
+      <Grid item xs={12}>
+        <QueryUploader
+          query={query}
+          queryTables={queryTables}
+          setQueryData={setQueryData}
+        />
       </Grid>
     </Grid>
   )

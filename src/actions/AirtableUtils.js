@@ -18,11 +18,19 @@ const run = ({ baseName }) => (payload) => {
     const headers = generateHeader();
     const {queryToken} = payload;
     const params = queryToken.url;
-    return {
-        type: `AIRTABLE_RUN_${baseName}`,
-        meta: payload,
-        payload: AIRTABLE_API.get(params, { headers }),
-    };
+    if (queryToken.url) {
+        return {
+            type: `AIRTABLE_RUN_${baseName}`,
+            meta: payload,
+            payload: AIRTABLE_API.get(params, { headers }),
+        };
+    } else {
+        return {
+            type: `AIRTABLE_RUN_${baseName}_EMPTY`,
+            meta: payload,
+            payload: {data: {records: []}}
+        }
+    }
 }
 
 const link = () => (payload) => {
